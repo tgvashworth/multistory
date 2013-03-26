@@ -1,0 +1,16 @@
+{
+  "name": "story-parse",
+  "version": "0.0.1",
+  "description": "ERROR: No README.md file found!",
+  "main": "parse.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "",
+  "author": "",
+  "license": "MIT",
+  "gitHead": "1585b0c9d7cbfb097655c6c3bbfb70ead2301b97",
+  "dependencies": {
+    "underscore": "~1.4.4"
+  }
+}
