@@ -4,9 +4,15 @@ var fs = require('fs'),
 var file = fs.readFileSync(process.argv[2], {encoding: 'utf8'});
 
 var lines = file.split('\n'),
-    stories = [];
+    groups = {},
+    groupname = 'icebox';
 
-lines.forEach(function (line) {
+lines.forEach(function (line, index) {
+
+  if (line.match('---')) {
+    groupname = lines[index - 1].trim().toLowerCase();
+    if (!groups[groupname]) groups[groupname] = [];
+  }
 
   var res = line.match(/([A-Z\s']+)[A-Za-z\s.,!']([A-Z\s']+)[A-Za-z\s.,!']([A-Z\s']+)/g);
 
@@ -24,8 +30,8 @@ lines.forEach(function (line) {
 
   cleaned = cleaned.slice(0,2).concat(cleaned.slice(2).join(' '));
 
-  stories.push(_.object(['who', 'what', 'why'], cleaned));
+  groups[groupname].push(_.object(['who', 'what', 'why'], cleaned));
 
 });
 
-console.log(stories);
+console.log(groups);
