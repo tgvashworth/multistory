@@ -12,6 +12,9 @@
     padding: 1em;
     padding-left: 51vw;
   }
+  h1, h2 {
+    margin: 0;
+  }
   textarea {
     display: block;
     width: 50vw;
@@ -35,8 +38,8 @@
 
 <textarea ng-model="file.raw" ng-change="parse()"></textarea>
 
-<div ng-repeat="(group, stories) in file.groups">
-  <h2>{{group}}</h2>
+<div ng-repeat="stories in file.groups | toArray | storyOrder">
+  <h2>{{stories.$key}}</h2>
   <ul>
     <li ng-repeat="story in stories">
       <strong>{{story.who}}</strong> : {{story.what}} : <em>{{story.why}}</em>
@@ -48,16 +51,56 @@
 
 angular.module('story-parse', [])
 
-.controller('StoryParseCtrl', function ($scope) {
+.factory('storage', function () {
+  return {
+    get: function (identifier) {
+      return JSON.parse(localStorage.getItem(identifier)) || undefined;
+    },
+    save: function (identifier, data) {
+      return localStorage.setItem(identifier, JSON.stringify(data));
+    }
+  };
+})
 
-  $scope.file = {
+.filter('toArray', function () {
+  return function (obj) {
+    return Object.keys(obj).map(function (key) {
+      obj[key].$key = key;
+      return obj[key];
+    });
+  };
+})
+
+.filter('storyOrder', function () {
+  var lookup = {
+    'icebox': 100,
+    'backlog': 90,
+    'in progress': 80,
+    'in testing': 60,
+    'done': 40
+  };
+  return function (array) {
+    return array.sort(function (a, b) {
+
+      var aVal = lookup[a.$key.toLowerCase().trim()] || 1000,
+          bVal = lookup[b.$key.toLowerCase().trim()] || 1000;
+      return aVal - bVal;
+    });
+  };
+})
+
+.controller('StoryParseCtrl', function ($scope, storage) {
+
+  $scope.file = storage.get('file') || {
     raw: 'Paste your user stories file here.',
-    groups: {}
+    groups: []
   };
 
   $scope.parse = function () {
     var lines = $scope.file.raw.split('\n'),
         groupname = 'icebox';
+
+    $scope.file.groups = {};
 
     lines.forEach(function (line, index) {
 
@@ -85,6 +128,8 @@ angular.module('story-parse', [])
       $scope.file.groups[groupname].push(_.object(['who', 'what', 'why'], cleaned));
 
     });
+
+    storage.save('file', $scope.file);
   };
 
 })
