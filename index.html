@@ -1,0 +1,92 @@
+<!doctype html>
+<html ng-app="story-parse" ng-controller="StoryParseCtrl">
+<meta charset="utf8">
+<title>User Story Parser</title>
+
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 0;
+    font: 14px/1.5 sans-serif;
+    padding: 1em;
+    padding-left: 51vw;
+  }
+  textarea {
+    display: block;
+    width: 50vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    border: none;
+    border-right: 1px solid #444;
+    padding: 1em;
+    font: 14px/1.5 sans-serif;
+  }
+  textarea:focus {
+    outline: none;
+    background: #fafafa;
+  }
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.3/angular.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
+
+<textarea ng-model="file.raw" ng-change="parse()"></textarea>
+
+<div ng-repeat="(group, stories) in file.groups">
+  <h2>{{group}}</h2>
+  <ul>
+    <li ng-repeat="story in stories">
+      <strong>{{story.who}}</strong> : {{story.what}} : <em>{{story.why}}</em>
+    </li>
+  </ul>
+</div>
+
+<script>
+
+angular.module('story-parse', [])
+
+.controller('StoryParseCtrl', function ($scope) {
+
+  $scope.file = {
+    raw: 'Paste your user stories file here.',
+    groups: {}
+  };
+
+  $scope.parse = function () {
+    var lines = $scope.file.raw.split('\n'),
+        groupname = 'icebox';
+
+    lines.forEach(function (line, index) {
+
+      if (line.match('---')) {
+        groupname = lines[index - 1].trim().toLowerCase();
+        if (!$scope.file.groups[groupname]) $scope.file.groups[groupname] = [];
+      }
+
+      var res = line.match(/([A-Z\s']+)[A-Za-z\s.,!']([A-Z\s']+)[A-Za-z\s.,!']([A-Z\s']+)/g);
+
+      if (!res) return;
+
+      var cleaned = res.map(function (segment, index) {
+        var str = (segment || '')
+                    .replace(',', '')
+                    .replace(/as a/i, '')
+                    .trim();
+        if (index === 0) str = str.replace(' I', '').trim();
+        return str.toLowerCase();
+      });
+
+
+      cleaned = cleaned.slice(0,2).concat(cleaned.slice(2).join(' '));
+
+      $scope.file.groups[groupname].push(_.object(['who', 'what', 'why'], cleaned));
+
+    });
+  };
+
+})
+
+</script>
