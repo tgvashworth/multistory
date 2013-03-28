@@ -9,11 +9,22 @@
     margin: 0;
     padding: 0;
     font: 14px/1.5 sans-serif;
-    padding: 1em;
-    padding-left: 51vw;
+    padding-left: 50vw;
   }
   h1, h2 {
     margin: 0;
+  }
+  header {
+    padding: 1em;
+    border-bottom: 1px solid #444;
+    background: #fafafa;
+  }
+  header h1 {
+    display: inline-block;
+    font-size: 1em;
+    float: right;
+  }
+  input[type=search] {
   }
   textarea {
     display: block;
@@ -31,20 +42,30 @@
     outline: none;
     background: #fafafa;
   }
+  .stories {
+    padding: 1em;
+  }
 </style>
 
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.3/angular.min.js"></script>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
 
+<header>
+  <h1>multistory</h1>
+  Search: <input ng-model="search" type="search">
+</header>
+
 <textarea ng-model="file.raw" ng-change="parse()"></textarea>
 
-<div ng-repeat="stories in file.groups | toArray | storyOrder">
-  <h2>{{stories.$key}}</h2>
-  <ul>
-    <li ng-repeat="story in stories">
-      <strong>{{story.who}}</strong> : {{story.what}} : <em>{{story.why}}</em>
-    </li>
-  </ul>
+<div class="stories">
+  <div ng-repeat="stories in groupsArray | filter:search | removeEmpty">
+    <h2>{{stories.$key}}</h2>
+    <ul>
+      <li ng-repeat="story in stories | filter:search">
+        <strong>{{story.who}}</strong> : {{story.what}} : <em>{{story.why}}</em>
+      </li>
+    </ul>
+  </div>
 </div>
 
 <script>
@@ -89,12 +110,28 @@ angular.module('story-parse', [])
   };
 })
 
-.controller('StoryParseCtrl', function ($scope, storage) {
+.filter('removeEmpty', function () {
+  return function (array) {
+    return array.filter(function (subArray) {
+      return !!subArray.length;
+    });
+  };
+})
+
+.controller('StoryParseCtrl', function ($scope, $filter, storage) {
 
   $scope.file = storage.get('file') || {
     raw: 'Paste your user stories file here.',
     groups: []
   };
+
+  $scope.$watch('file.raw', function () {
+    $scope.groupsArray = $filter('storyOrder')(
+                           $filter('toArray')(
+                             $scope.file.groups
+                           )
+                         );
+  });
 
   $scope.parse = function () {
     var lines = $scope.file.raw.split('\n'),
