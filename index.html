@@ -58,13 +58,21 @@
 <textarea ng-model="file.raw" ng-change="parse()"></textarea>
 
 <div class="stories">
-  <div ng-repeat="stories in groupsArray | filter:search | removeEmpty">
+  <div ng-repeat="stories in groupsArray | removeEmpty">
     <h2>{{stories.$key}}</h2>
+    <div class="actors">
+      Show:
+      <button ng-repeat="actor in stories | extract:'who'"
+              ng-click="searchFor(actor)">{{actor}}</button>
+    </div>
     <ul>
       <li ng-repeat="story in stories | filter:search">
         <strong>{{story.who}}</strong> : {{story.what}} : <em>{{story.why}}</em>
       </li>
     </ul>
+  </div>
+  <div ng-hide="groupsArray.length">
+    No stories found!
   </div>
 </div>
 
@@ -88,6 +96,16 @@ angular.module('story-parse', [])
     return Object.keys(obj).map(function (key) {
       obj[key].$key = key;
       return obj[key];
+    });
+  };
+})
+
+.filter('extract', function () {
+  return function (array, key) {
+    return array.map(function (element) {
+      return element[key];
+    }).filter(function (element) {
+      return !!element;
     });
   };
 })
@@ -143,8 +161,8 @@ angular.module('story-parse', [])
 
       if (line.match('---')) {
         groupname = lines[index - 1].trim().toLowerCase();
-        if (!$scope.file.groups[groupname]) $scope.file.groups[groupname] = [];
       }
+      if (!$scope.file.groups[groupname]) $scope.file.groups[groupname] = [];
 
       var res = line.match(/([A-Z\s']+)[A-Za-z\s.,!']([A-Z\s']+)[A-Za-z\s.,!']([A-Z\s']+)/g);
 
@@ -155,7 +173,7 @@ angular.module('story-parse', [])
                     .replace(',', '')
                     .replace(/as a/i, '')
                     .trim();
-        if (index === 0) str = str.replace(' I', '').trim();
+        if (index === 0) str = str.replace(/ i/i, '').trim();
         return str.toLowerCase();
       });
 
@@ -167,6 +185,15 @@ angular.module('story-parse', [])
     });
 
     storage.save('file', $scope.file);
+  };
+
+  $scope.searchFor = function (actor) {
+    $scope.search = $scope.search || '';
+    if ($scope.search.indexOf(actor) !== -1) {
+      $scope.search.replace(actor, '');
+    } else {
+      $scope.search = ($scope.search + ' ' + actor).trim();
+    }
   };
 
 })
