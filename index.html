@@ -42,8 +42,8 @@
     outline: none;
     background: #fafafa;
   }
-  .stories {
-    padding: 1em;
+  .stories, .actors {
+    padding: 1em 1em 0;
   }
 </style>
 
@@ -57,14 +57,15 @@
 
 <textarea ng-model="file.raw" ng-change="parse()"></textarea>
 
+<div class="actors">
+  Show:
+  <button ng-repeat="actor in actors"
+          ng-click="searchFor(actor)">{{actor}}</button>
+</div>
+
 <div class="stories">
   <div ng-repeat="stories in groupsArray | removeEmpty">
     <h2>{{stories.$key}}</h2>
-    <div class="actors">
-      Show:
-      <button ng-repeat="actor in stories | extract:'who'"
-              ng-click="searchFor(actor)">{{actor}}</button>
-    </div>
     <ul>
       <li ng-repeat="story in stories | filter:search">
         <strong>{{story.who}}</strong>
@@ -144,6 +145,15 @@ angular.module('story-parse', [])
   };
 })
 
+.filter('distinct', function () {
+  return function (array) {
+    var lookup = {};
+    return array.filter(function (element) {
+      return lookup[element] ? false : lookup[element] = true;
+    });
+  };
+})
+
 .controller('StoryParseCtrl', function ($scope, $filter, storage) {
 
   $scope.file = storage.get('file') || {
@@ -157,6 +167,13 @@ angular.module('story-parse', [])
                              $scope.file.groups
                            )
                          );
+    var actors = [];
+    $scope.groupsArray.forEach(function (stories) {
+      actors = actors.concat(stories.map(function (story) {
+        return story.who;
+      }));
+    });
+    $scope.actors = $filter('distinct')(actors);
   });
 
   $scope.parse = function () {
