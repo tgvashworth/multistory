@@ -67,7 +67,15 @@
     </div>
     <ul>
       <li ng-repeat="story in stories | filter:search">
-        <strong>{{story.who}}</strong> : {{story.what}} : <em>{{story.why}}</em>
+        <strong>{{story.who}}</strong>
+        :
+        {{story.what}}
+        :
+        <em>{{story.why}}</em>
+        <span ng-show="story.sizes.length">
+          :
+          <span ng-repeat="size in story.sizes">[{{size}}]</span>
+        </span>
       </li>
     </ul>
   </div>
@@ -159,14 +167,26 @@ angular.module('story-parse', [])
 
     lines.forEach(function (line, index) {
 
+      var cleanedSizes = [];
+
       if (line.match('---')) {
         groupname = lines[index - 1].trim().toLowerCase();
       }
       if (!$scope.file.groups[groupname]) $scope.file.groups[groupname] = [];
 
-      var res = line.match(/([A-Z\s']+)[A-Za-z\s.,!']([A-Z\s']+)[A-Za-z\s.,!']([A-Z\s']+)/g);
+      var res = line.match(/([A-Z\s']+)[A-Za-z\s.,!']([A-Z\s']+)[A-Za-z\s.,!']([A-Z\s']+)/g),
+          size = line.match(/\[.+\]/g);
+
 
       if (!res) return;
+
+      if (size) {
+        cleanedSizes = size.map(function (segment) {
+          return segment
+                  .replace('[', '')
+                  .replace(']', '');
+        });
+      }
 
       var cleaned = res.map(function (segment, index) {
         var str = (segment || '')
@@ -177,10 +197,16 @@ angular.module('story-parse', [])
         return str.toLowerCase();
       });
 
-
       cleaned = cleaned.slice(0,2).concat(cleaned.slice(2).join(' '));
 
-      $scope.file.groups[groupname].push(_.object(['who', 'what', 'why'], cleaned));
+      var story = _.object(['who', 'what', 'why'], cleaned);
+
+      story.sizes = cleanedSizes;
+
+      $scope
+        .file
+        .groups[groupname]
+        .push(story);
 
     });
 
