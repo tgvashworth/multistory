@@ -1,6 +1,44 @@
-angular.module('multistory', ['ms-filters', 'ms-storage'])
+angular.module('multistory', ['ms-filters', 'ms-storage', 'dropbox'])
 
-.controller('MultistoryCtrl', function ($scope, $filter, storage) {
+.config(function ($locationProvider, $routeProvider) {
+  $routeProvider
+    .otherwise({
+      controller: 'MultistoryCtrl',
+      templateUrl: '/template/panels.html'
+    });
+
+  $locationProvider.html5Mode(true);
+})
+
+.controller('MultistoryCtrl', function ($scope, $filter, $location, storage, dropbox) {
+
+  // ==================================
+  // Authentication
+  // ==================================
+
+  // Trigger auth
+  $scope.auth = function () {
+    dropbox.authenticate();
+  };
+
+  $scope.$on('dropbox:success', function (e, client) {
+    if ($scope.authenticated) return;
+    $location
+      .search({})
+      .replace();
+    $scope.authenticated = true;
+    client.getUserInfo(function (error, userInfo) {
+      console.log.apply(console, [].slice.call(arguments));
+    });
+  });
+
+  $scope.$on('dropbox:error', function (e, client) {
+    $scope.authenticated = false;
+  });
+
+  // ==================================
+  // Editor
+  // ==================================
 
   $scope.file = storage.get('file') || {
     raw: 'Paste your user stories file here.',

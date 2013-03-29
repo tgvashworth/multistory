@@ -1,0 +1,65 @@
+* { box-sizing: border-box; }
+[ng-cloak] {
+  visibility: hidden;
+}
+body {
+  margin: 0;
+  padding: 0;
+  font: 14px/1.5 sans-serif;
+  padding-left: 50vw;
+}
+button {
+  font: 14px/1.5 sans-serif;
+}
+h1, h2 {
+  margin: 0;
+}
+header {
+  padding: 1em;
+  border-bottom: 1px solid #444;
+  background: #fafafa;
+}
+
+header h1 {
+  display: block;
+  font-size: 1em;
+  float: right;
+}
+
+.sign-in {
+  background: hsl(204, 82%, 57%);
+  border: none;
+  border-radius: 0.444em;
+  font-size: 1em;
+  color: white;
+  float: right;
+  padding: 0.444em 1em;
+  margin-top: -0.444em;
+  margin-right: 1em;
+  cursor: pointer;
+  text-decoration: none;
+}
+  .sign-in:hover {
+    background: hsl(204, 82%, 50%);
+  }
+
+.stories, .actors {
+  padding: 1em 1em 0;
+}
+
+textarea {
+  display: block;
+  width: 50vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  border: none;
+  border-right: 1px solid #444;
+  padding: 1em;
+  font: 14px/1.5 sans-serif;
+}
+textarea:focus {
+  outline: none;
+  background: #fafafa;
+}
