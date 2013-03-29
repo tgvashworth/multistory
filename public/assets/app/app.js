@@ -1,0 +1,88 @@
+angular.module('multistory', ['ms-filters', 'ms-storage'])
+
+.controller('MultistoryCtrl', function ($scope, $filter, storage) {
+
+  $scope.file = storage.get('file') || {
+    raw: 'Paste your user stories file here.',
+    groups: []
+  };
+
+  $scope.$watch('file.raw', function () {
+    $scope.groupsArray = $filter('storyOrder')(
+                           $filter('toArray')(
+                             $scope.file.groups
+                           )
+                         );
+    var actors = [];
+    $scope.groupsArray.forEach(function (stories) {
+      actors = actors.concat(stories.map(function (story) {
+        return story.who;
+      }));
+    });
+    $scope.actors = $filter('distinct')(actors);
+  });
+
+  $scope.parse = function () {
+    var lines = $scope.file.raw.split('\n'),
+        groupname = 'icebox';
+
+    $scope.file.groups = {};
+
+    lines.forEach(function (line, index) {
+
+      var cleanedSizes = [];
+
+      if (line.match('---')) {
+        groupname = lines[index - 1].trim().toLowerCase();
+      }
+      if (!$scope.file.groups[groupname]) $scope.file.groups[groupname] = [];
+
+      var res = line.match(/([A-Z\s'\(\)]+)[A-Za-z\s.,!']([A-Z\s'\(\)]+)[A-Za-z\s.,!']([A-Z\s'\(\)]+)/g),
+          size = line.match(/\[.+\]/g);
+
+
+      if (!res) return;
+
+      if (size) {
+        cleanedSizes = size.map(function (segment) {
+          return segment
+                  .replace('[', '')
+                  .replace(']', '');
+        });
+      }
+
+      var cleaned = res.map(function (segment, index) {
+        var str = (segment || '')
+                    .replace(',', '')
+                    .replace(/as a/i, '')
+                    .trim();
+        if (index === 0) str = str.replace(/ i/i, '').trim();
+        return str.toLowerCase();
+      });
+
+      cleaned = cleaned.slice(0,2).concat(cleaned.slice(2).join(' '));
+
+      var story = _.object(['who', 'what', 'why'], cleaned);
+
+      story.sizes = cleanedSizes;
+
+      $scope
+        .file
+        .groups[groupname]
+        .push(story);
+
+    });
+
+    storage.save('file', $scope.file);
+  };
+
+  $scope.searchFor = function (actor) {
+    $scope.search = $scope.search || '';
+    if ($scope.search.indexOf(actor) !== -1) {
+      $scope.search.replace(actor, '');
+    } else {
+      $scope.search = ($scope.search + ' ' + actor).trim();
+    }
+  };
+
+});

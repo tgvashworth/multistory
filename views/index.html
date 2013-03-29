@@ -1,7 +1,7 @@
 <!doctype html>
-<html ng-app="story-parse" ng-controller="StoryParseCtrl">
+<html ng-app="multistory" ng-controller="MultistoryCtrl">
 <meta charset="utf8">
-<title>User Story Parser</title>
+<title>Multistory</title>
 
 <style>
   * { box-sizing: border-box; }
@@ -47,8 +47,6 @@
   }
 </style>
 
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.3/angular.min.js"></script>
-<script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
 
 <header>
   <h1>multistory</h1>
@@ -85,160 +83,8 @@
   </div>
 </div>
 
-<script>
-
-angular.module('story-parse', [])
-
-.factory('storage', function () {
-  return {
-    get: function (identifier) {
-      return JSON.parse(localStorage.getItem(identifier)) || undefined;
-    },
-    save: function (identifier, data) {
-      return localStorage.setItem(identifier, JSON.stringify(data));
-    }
-  };
-})
-
-.filter('toArray', function () {
-  return function (obj) {
-    return Object.keys(obj).map(function (key) {
-      obj[key].$key = key;
-      return obj[key];
-    });
-  };
-})
-
-.filter('extract', function () {
-  return function (array, key) {
-    return array.map(function (element) {
-      return element[key];
-    }).filter(function (element) {
-      return !!element;
-    });
-  };
-})
-
-.filter('storyOrder', function () {
-  var lookup = {
-    'icebox': 100,
-    'backlog': 90,
-    'in progress': 80,
-    'in testing': 60,
-    'done': 40
-  };
-  return function (array) {
-    return array.sort(function (a, b) {
-
-      var aVal = lookup[a.$key.toLowerCase().trim()] || 1000,
-          bVal = lookup[b.$key.toLowerCase().trim()] || 1000;
-      return aVal - bVal;
-    });
-  };
-})
-
-.filter('removeEmpty', function () {
-  return function (array) {
-    return array.filter(function (subArray) {
-      return !!subArray.length;
-    });
-  };
-})
-
-.filter('distinct', function () {
-  return function (array) {
-    var lookup = {};
-    return array.filter(function (element) {
-      return lookup[element] ? false : lookup[element] = true;
-    });
-  };
-})
-
-.controller('StoryParseCtrl', function ($scope, $filter, storage) {
-
-  $scope.file = storage.get('file') || {
-    raw: 'Paste your user stories file here.',
-    groups: []
-  };
-
-  $scope.$watch('file.raw', function () {
-    $scope.groupsArray = $filter('storyOrder')(
-                           $filter('toArray')(
-                             $scope.file.groups
-                           )
-                         );
-    var actors = [];
-    $scope.groupsArray.forEach(function (stories) {
-      actors = actors.concat(stories.map(function (story) {
-        return story.who;
-      }));
-    });
-    $scope.actors = $filter('distinct')(actors);
-  });
-
-  $scope.parse = function () {
-    var lines = $scope.file.raw.split('\n'),
-        groupname = 'icebox';
-
-    $scope.file.groups = {};
-
-    lines.forEach(function (line, index) {
-
-      var cleanedSizes = [];
-
-      if (line.match('---')) {
-        groupname = lines[index - 1].trim().toLowerCase();
-      }
-      if (!$scope.file.groups[groupname]) $scope.file.groups[groupname] = [];
-
-      var res = line.match(/([A-Z\s'\(\)]+)[A-Za-z\s.,!']([A-Z\s'\(\)]+)[A-Za-z\s.,!']([A-Z\s'\(\)]+)/g),
-          size = line.match(/\[.+\]/g);
-
-
-      if (!res) return;
-
-      if (size) {
-        cleanedSizes = size.map(function (segment) {
-          return segment
-                  .replace('[', '')
-                  .replace(']', '');
-        });
-      }
-
-      var cleaned = res.map(function (segment, index) {
-        var str = (segment || '')
-                    .replace(',', '')
-                    .replace(/as a/i, '')
-                    .trim();
-        if (index === 0) str = str.replace(/ i/i, '').trim();
-        return str.toLowerCase();
-      });
-
-      cleaned = cleaned.slice(0,2).concat(cleaned.slice(2).join(' '));
-
-      var story = _.object(['who', 'what', 'why'], cleaned);
-
-      story.sizes = cleanedSizes;
-
-      $scope
-        .file
-        .groups[groupname]
-        .push(story);
-
-    });
-
-    storage.save('file', $scope.file);
-  };
-
-  $scope.searchFor = function (actor) {
-    $scope.search = $scope.search || '';
-    if ($scope.search.indexOf(actor) !== -1) {
-      $scope.search.replace(actor, '');
-    } else {
-      $scope.search = ($scope.search + ' ' + actor).trim();
-    }
-  };
-
-})
-
-</script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.3/angular.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
+<script src="/assets/app/storage.js"></script>
+<script src="/assets/app/filters.js"></script>
+<script src="/assets/app/app.js"></script>
