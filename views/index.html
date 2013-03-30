@@ -15,6 +15,33 @@
     <span class="icon-search"></span>
     <input ng-model="search" type="search">
   </span>
+
+  <div class="browser"
+       ng-show="authenticated">
+    <div class="meta">
+      <span ng-show="path.stack.length">
+        <a ng-click="back()" href="#"><span class="icon-back"></span> Back</a>
+        <em>from</em>
+      </span>
+      <strong>{{path.current}}</strong>
+    </div>
+    <ul class="files">
+      <li ng-repeat="entry in dropbox.entries | folderOrTxt">
+        <a class="folder"
+           href="#"
+           ng-click="openFolder(entry.name)"
+           ng-show="entry.isFolder">
+           <span class="icon-folder"></span> {{ entry.name }}
+        </a>
+        <a class="document"
+           href="#"
+           ng-click="openFile(entry.name)"
+           ng-show="!entry.isFolder">
+          <span class="icon-document"></span> {{ entry.name }}
+        </a>
+      </li>
+    </ul>
+  </div>
 </header>
 
 <div ng-view></div>
