@@ -33,10 +33,7 @@ angular.module('dropbox', [])
       });
     },
     file: function (path, cb) {
-      client.readFile(path, function (err, data) {
-        console.log.apply(console, [].slice.call(arguments));
-        return cb(err, data);
-      });
+      client.readFile(path, cb);
     }
   };
 

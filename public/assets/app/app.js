@@ -66,10 +66,14 @@ angular.module('multistory', ['ms-filters', 'ms-storage', 'dropbox'])
   };
 
   $scope.openFile = function (name) {
-    $scope.path.stack.push(name);
-    $scope.path.current = '/' + $scope.path.stack.join('/');
-    dropbox.file($scope.path.current, function () {
-      console.log.apply(console, [].slice.call(arguments));
+    var stack = angular.copy($scope.path.stack),
+        path;
+    stack.push(name);
+    path = '/' + stack.join('/');
+    dropbox.file(path, function (err, data) {
+      $scope.$apply(function () {
+        $scope.file.raw = data;
+      });
     });
   };
 
@@ -88,6 +92,7 @@ angular.module('multistory', ['ms-filters', 'ms-storage', 'dropbox'])
   };
 
   $scope.$watch('file.raw', function () {
+    $scope.parse();
     $scope.groupsArray = $filter('storyOrder')(
                            $filter('toArray')(
                              $scope.file.groups
@@ -157,12 +162,7 @@ angular.module('multistory', ['ms-filters', 'ms-storage', 'dropbox'])
   };
 
   $scope.searchFor = function (actor) {
-    $scope.search = $scope.search || '';
-    if ($scope.search.indexOf(actor) !== -1) {
-      $scope.search.replace(actor, '');
-    } else {
-      $scope.search = ($scope.search + ' ' + actor).trim();
-    }
+    $scope.search = actor.trim();
   };
 
 });

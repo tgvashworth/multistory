@@ -23,6 +23,7 @@ angular.module('ms-filters', [])
   var lookup = {
     'icebox': 100,
     'backlog': 90,
+    'next sprint': 85,
     'in progress': 80,
     'in testing': 60,
     'done': 40
