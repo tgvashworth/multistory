@@ -3,11 +3,11 @@ angular.module('dropbox', [])
 .factory('dropbox', function ($rootScope, $location) {
 
   var client = new Dropbox.Client({
-      key: "FGaYi1AdNxA=|ooVqJg/bZ06ETSKUK8FWlQ9vT9dKEdomuRRDFjqRtw==",
-      sandbox: true
+      key: "FGaYi1AdNxA=|ooVqJg/bZ06ETSKUK8FWlQ9vT9dKEdomuRRDFjqRtw=="
   });
 
-  client.authDriver(new Dropbox.Drivers.Redirect());
+  client.authDriver(new Dropbox.Drivers.Redirect({
+  }));
 
   var doneAuth = function (error, client) {
     $rootScope.$apply(function () {
@@ -26,6 +26,17 @@ angular.module('dropbox', [])
     client: client,
     authenticate: function () {
       client.authenticate(doneAuth);
+    },
+    dir: function (path, cb) {
+      client.readdir(path, function (err, entryList, e, entries) {
+        return cb(err, entries);
+      });
+    },
+    file: function (path, cb) {
+      client.readFile(path, function (err, data) {
+        console.log.apply(console, [].slice.call(arguments));
+        return cb(err, data);
+      });
     }
   };
 

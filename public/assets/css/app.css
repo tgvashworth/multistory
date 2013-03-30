@@ -43,8 +43,32 @@ header h1 {
     background: hsl(204, 82%, 50%);
   }
 
-.stories, .actors {
+.stories, .actors, .browser {
   padding: 1em 1em 0;
+}
+
+.search input {
+  margin-left: 0.444em;
+}
+
+.browser ul {
+  padding: 0;
+  list-style: none;
+}
+
+.browser a {
+  text-decoration: none;
+  display: block;
+}
+  .browser a:hover {
+    background: hsl(204, 82%, 97%);
+  }
+
+.browser .folder {
+  color: #888;
+}
+.browser .document {
+  color: hsl(204, 82%, 57%);
 }
 
 textarea {

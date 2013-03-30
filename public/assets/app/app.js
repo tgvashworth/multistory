@@ -3,7 +3,6 @@ angular.module('multistory', ['ms-filters', 'ms-storage', 'dropbox'])
 .config(function ($locationProvider, $routeProvider) {
   $routeProvider
     .otherwise({
-      controller: 'MultistoryCtrl',
       templateUrl: '/template/panels.html'
     });
 
@@ -21,20 +20,63 @@ angular.module('multistory', ['ms-filters', 'ms-storage', 'dropbox'])
     dropbox.authenticate();
   };
 
+  // ==================================
+  // Dropbox
+  // ==================================
+
   $scope.$on('dropbox:success', function (e, client) {
     if ($scope.authenticated) return;
     $location
       .search({})
       .replace();
     $scope.authenticated = true;
-    client.getUserInfo(function (error, userInfo) {
-      console.log.apply(console, [].slice.call(arguments));
-    });
+    $scope.loadStack();
   });
 
   $scope.$on('dropbox:error', function (e, client) {
     $scope.authenticated = false;
   });
+
+  // ==================================
+  // Files
+  // ==================================
+
+  $scope.dropbox = {
+    entries: []
+  };
+  $scope.path = {
+    current: '/',
+    stack: []
+  };
+
+  $scope.loadStack = function () {
+    $scope.entries = [{name: 'Loading...'}];
+    $scope.path.current = '/' + $scope.path.stack.join('/');
+    dropbox.dir($scope.path.current, function (err, entries) {
+      $scope.$apply(function () {
+        $scope.dropbox.entries = angular.copy(entries);
+        storage.save('entries', $scope.dropbox.entries);
+      });
+    });
+  };
+
+  $scope.openFolder = function (name) {
+    $scope.path.stack.push(name);
+    $scope.loadStack();
+  };
+
+  $scope.openFile = function (name) {
+    $scope.path.stack.push(name);
+    $scope.path.current = '/' + $scope.path.stack.join('/');
+    dropbox.file($scope.path.current, function () {
+      console.log.apply(console, [].slice.call(arguments));
+    });
+  };
+
+  $scope.back = function () {
+    $scope.path.stack.pop();
+    $scope.loadStack();
+  };
 
   // ==================================
   // Editor

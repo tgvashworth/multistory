@@ -3,6 +3,7 @@
 <meta charset="utf8">
 <title>Multistory</title>
 
+<link rel="stylesheet" href="/assets/css/fonts.css">
 <link rel="stylesheet" href="/assets/css/app.css">
 
 <header>
@@ -10,7 +11,10 @@
   <a class="sign-in"
      ng-click="auth()"
      ng-hide="authenticated">Sign in with Dropbox</a>
-  Search: <input ng-model="search" type="search">
+  <span class="search">
+    <span class="icon-search"></span>
+    <input ng-model="search" type="search">
+  </span>
 </header>
 
 <div ng-view></div>

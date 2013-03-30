@@ -1,5 +1,28 @@
 <textarea ng-model="file.raw" ng-change="parse()"></textarea>
 
+<div class="browser"
+     ng-show="authenticated">
+  <button ng-show="path.stack.length"
+          ng-click="back()">&larr; Back</button>
+  <span>{{path.current}}</span>
+  <ul>
+    <li ng-repeat="entry in dropbox.entries | folderOrTxt">
+      <a class="folder"
+         href="#"
+         ng-click="openFolder(entry.name)"
+         ng-show="entry.isFolder">
+         <span class="icon-folder"></span> {{ entry.name }}
+      </a>
+      <a class="document"
+         href="#"
+         ng-click="openFile(entry.name)"
+         ng-show="!entry.isFolder">
+        <span class="icon-document"></span> {{ entry.name }}
+      </a>
+    </li>
+  </ul>
+</div>
+
 <div class="actors">
   Show:
   <button ng-repeat="actor in actors"

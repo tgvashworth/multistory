@@ -52,4 +52,12 @@ angular.module('ms-filters', [])
       return lookup[element] ? false : lookup[element] = true;
     });
   };
+})
+
+.filter('folderOrTxt', function () {
+  return function (array) {
+    return array.filter(function (element) {
+      return element.isFolder ? true : !!element.name.match(/\.txt/);
+    });
+  };
 });
