@@ -15,12 +15,12 @@ var pkg = require('./package.json'),
 require('express-namespace');
 
 // Database setup
-mongoose.connect(config.mongo.url);
-mongoose.set('debug', config.mongo.debug);
-db.on('error', console.error.bind(console, 'Connection Error:'));
-db.once('open', function () {
-  console.log ("Database connection established.");
-});
+// mongoose.connect(config.mongo.url);
+// mongoose.set('debug', config.mongo.debug);
+// db.on('error', console.error.bind(console, 'Connection Error:'));
+// db.once('open', function () {
+//   console.log ("Database connection established.");
+// });
 
 var app = express();
 
@@ -53,7 +53,7 @@ app.configure('production', function(){
 });
 
 // Serve the API
-api.init(app);
+// api.init(app);
 
 // Serve the templates
 app.get('/template/:file', function (req, res) {
