@@ -36,8 +36,9 @@
       </span>
       <strong>{{path.current}}</strong>
     </div>
+    <div ng-hide="dropbox.entries">No files.</div>
     <ul class="files">
-      <li ng-repeat="entry in dropbox.entries | folderOrTxt">
+      <li ng-repeat="entry in dropbox.entries">
         <a class="folder"
            href="#"
            ng-click="openFolder(entry.name)"

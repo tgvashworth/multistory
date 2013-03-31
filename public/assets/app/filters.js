@@ -55,10 +55,10 @@ angular.module('ms-filters', [])
   };
 })
 
-.filter('folderOrTxt', function () {
+.filter('fileType', function () {
   return function (array) {
     return array.filter(function (element) {
-      return element.isFolder ? true : !!element.name.match(/\.txt/);
+      return element.isFolder ? true : !!element.name.match(/\.(txt|md)/);
     });
   };
 });

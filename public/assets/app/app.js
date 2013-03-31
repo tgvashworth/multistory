@@ -55,7 +55,7 @@ angular.module('multistory', ['ms-filters', 'ms-storage', 'dropbox'])
     $scope.path.current = '/' + $scope.path.stack.join('/');
     dropbox.dir($scope.path.current, function (err, entries) {
       $scope.$apply(function () {
-        $scope.dropbox.entries = angular.copy(entries);
+        $scope.dropbox.entries = $filter('fileType')(angular.copy(entries));
         storage.save('entries', $scope.dropbox.entries);
       });
     });

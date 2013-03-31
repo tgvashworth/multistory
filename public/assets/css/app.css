@@ -22,7 +22,14 @@ header {
 
 header a {
   text-decoration: none;
+  color: hsl(204, 82%, 57%);
 }
+  header a:hover {
+    color: hsl(204, 82%, 50%);
+  }
+  header a:active {
+    color: hsl(204, 82%, 40%);
+  }
 
 header h1 {
   display: block;
@@ -52,6 +59,11 @@ header menu {
 }
   .sign-in:hover {
     background: hsl(204, 82%, 50%);
+    color: white;
+  }
+  .sign-in:active {
+    background: hsl(204, 82%, 45%);
+    color: white;
   }
 
 .stories, .actors {
@@ -86,10 +98,21 @@ header menu {
   color: hsl(204, 82%, 57%);
 }
 
+.meta {
+  margin-bottom: 0.444em;
+}
+
 .meta a {
   font-weight: bold;
   text-decoration: none;
+  color: hsl(204, 82%, 57%);
 }
+  .meta a:hover {
+    color: hsl(204, 82%, 50%);
+  }
+  .meta a:active {
+    color: hsl(204, 82%, 40%);
+  }
 
 textarea {
   display: block;
