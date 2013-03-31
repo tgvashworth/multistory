@@ -74,6 +74,7 @@ angular.module('multistory', ['ms-filters', 'ms-storage', 'dropbox'])
     dropbox.file(path, function (err, data) {
       $scope.$apply(function () {
         $scope.file.raw = data;
+        $scope.dropbox.open = false;
       });
     });
   };
