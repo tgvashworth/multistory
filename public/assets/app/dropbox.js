@@ -7,6 +7,7 @@ angular.module('dropbox', [])
   });
 
   client.authDriver(new Dropbox.Drivers.Redirect({
+    rememberUser: true
   }));
 
   var doneAuth = function (error, client) {
