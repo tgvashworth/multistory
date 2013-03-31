@@ -8,16 +8,27 @@
 
 <header>
   <h1>multistory</h1>
-  <a class="sign-in"
+
+    <a class="sign-in"
      ng-click="auth()"
      ng-hide="authenticated">Sign in with Dropbox</a>
+
   <span class="search">
     <span class="icon-search"></span>
     <input ng-model="search" type="search">
   </span>
 
+  <menu ng-show="authenticated">
+    <a href="#"
+       ng-click="dropbox.open = !dropbox.open">
+      <span class="icon-document"></span>
+      <span ng-show="dropbox.open">Hide</span>
+      <span ng-show="!dropbox.open">Show</span> Files
+    </a>
+  </menu>
+
   <div class="browser"
-       ng-show="authenticated">
+       ng-show="authenticated && dropbox.open">
     <div class="meta">
       <span ng-show="path.stack.length">
         <a ng-click="back()" href="#"><span class="icon-back"></span> Back</a>

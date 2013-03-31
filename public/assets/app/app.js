@@ -42,7 +42,8 @@ angular.module('multistory', ['ms-filters', 'ms-storage', 'dropbox'])
   // ==================================
 
   $scope.dropbox = {
-    entries: []
+    entries: [],
+    open: true
   };
   $scope.path = {
     current: '/',
@@ -86,8 +87,8 @@ angular.module('multistory', ['ms-filters', 'ms-storage', 'dropbox'])
   // Editor
   // ==================================
 
-  $scope.file = storage.get('file') || {
-    raw: 'Paste your user stories file here.',
+  $scope.file = {
+    raw: 'Paste your user stories here, or open a file by signing in with Dropbox.',
     groups: []
   };
 

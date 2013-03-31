@@ -20,10 +20,20 @@ header {
   background: #fafafa;
 }
 
+header a {
+  text-decoration: none;
+}
+
 header h1 {
   display: block;
   font-size: 1em;
   float: right;
+}
+
+header menu {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
 }
 
 .sign-in {
@@ -43,8 +53,12 @@ header h1 {
     background: hsl(204, 82%, 50%);
   }
 
-.stories, .actors, .browser {
+.stories, .actors {
   padding: 1em 1em 0;
+}
+
+.browser {
+  padding: 1em 0 0;
 }
 
 .search input {
@@ -57,7 +71,6 @@ header h1 {
 }
 
 .browser .files a {
-  text-decoration: none;
   display: block;
 }
   .browser .files a:hover {

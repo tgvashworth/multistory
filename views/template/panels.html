@@ -1,6 +1,7 @@
 <textarea ng-model="file.raw"></textarea>
 
-<div class="actors">
+<div class="actors"
+     ng-show="actors">
   Show:
   <button ng-repeat="actor in actors"
           ng-click="searchFor(actor)">{{actor}}</button>
