@@ -124,7 +124,7 @@ textarea {
   border: none;
   border-right: 1px solid #444;
   padding: 1em;
-  font: 14px/1.5 sans-serif;
+  font: 14px/1.5 'Source Code Pro', monospace;
 }
 textarea:focus {
   outline: none;

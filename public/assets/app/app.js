@@ -51,7 +51,7 @@ angular.module('multistory', ['ms-filters', 'ms-storage', 'dropbox'])
   };
 
   $scope.loadStack = function () {
-    $scope.entries = [{name: 'Loading...'}];
+    $scope.dropbox.entries = [{name: 'Loading...'}];
     $scope.path.current = '/' + $scope.path.stack.join('/');
     dropbox.dir($scope.path.current, function (err, entries) {
       $scope.$apply(function () {
