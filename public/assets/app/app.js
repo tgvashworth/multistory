@@ -124,7 +124,7 @@ angular.module('multistory', ['ms-filters', 'ms-storage', 'dropbox'])
       }
       if (!$scope.file.groups[groupname]) $scope.file.groups[groupname] = [];
 
-      var res = line.match(/([A-Z\s'\(\)]+)[A-Za-z\s.,!']([A-Z\s'\(\)]+)[A-Za-z\s.,!']([A-Z\s'\(\)]+)/g),
+      var res = line.match(/([A-Z\s'\(\)\&]+)[A-Za-z\s.,!']([A-Z\s'\(\)\&]+)[A-Za-z\s.,!']([A-Z\s'\(\)\&]+)/g),
           size = line.match(/\[.+\]/g);
 
 
