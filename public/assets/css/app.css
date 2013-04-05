@@ -1,61 +1,76 @@
 * { box-sizing: border-box; }
+
 [ng-cloak] {
   visibility: hidden;
 }
+
+/* Reset */
+
 body {
   margin: 0;
   padding: 0;
-  font: 14px/1.5 sans-serif;
-  padding-left: 50vw;
-}
-button {
-  font: 14px/1.5 sans-serif;
-}
-h1, h2 {
-  margin: 0;
-}
-header {
-  padding: 1em;
-  border-bottom: 1px solid #444;
-  background: #fafafa;
+  font: 16px/1.5 'Open Sans', sans-serif;
 }
 
-header a {
-  text-decoration: none;
-  color: hsl(204, 82%, 57%);
+button, input {
+  font: 16px/1.5 'Open Sans', sans-serif;
 }
-  header a:hover {
-    color: hsl(204, 82%, 50%);
-  }
-  header a:active {
-    color: hsl(204, 82%, 40%);
-  }
-
-header h1 {
-  display: block;
+h1, h2, h3, h4 {
   font-size: 1em;
-  float: right;
+  margin: 0;
 }
 
-header menu {
-  display: inline-block;
-  margin: 0;
-  padding: 0;
-  padding-left: 0.667em;
+/* Landing page */
+
+.landing {
+  width: 80%;
+  max-width: 38em;
+  background: #eee;
+  padding: 2.5em;
+  margin: 10vh auto;
+  position: relative;
 }
+  .landing h1 {
+    font-size: 1.5em;
+    text-align: center;
+    margin-bottom: 1.5em;
+    text-transform: uppercase;
+  }
+  .landing:before {
+    content: '';
+    display: block;
+    background: white;
+    -webkit-transform: rotate(45deg);
+    height: 20vh;
+    width: 20vh;
+    top: -10vh;
+    right: -10vh;;
+    position: absolute;
+  }
+
+.landing section {
+  margin: 1.5em 0;
+}
+  .landing section p {
+    margin: 0 0 1em;
+  }
+
+/* Dropbox */
 
 .sign-in {
   background: hsl(204, 82%, 57%);
   border: none;
   border-radius: 0.444em;
   font-size: 1em;
+  font-weight: normal;
   color: white;
-  float: right;
   padding: 0.444em 1em;
-  margin-top: -0.444em;
-  margin-right: 1em;
   cursor: pointer;
   text-decoration: none;
+  max-width: 17em;
+  text-align: center;
+  margin: 0 auto 2.5em;
+  display: block;
 }
   .sign-in:hover {
     background: hsl(204, 82%, 50%);
@@ -66,17 +81,7 @@ header menu {
     color: white;
   }
 
-.stories, .actors {
-  padding: 1em 1em 0;
-}
-
-.browser {
-  padding: 1em 0 0;
-}
-
-.search input {
-  margin-left: 0.444em;
-}
+/* Browser */
 
 .browser ul {
   padding: 0;
@@ -113,20 +118,3 @@ header menu {
   .meta a:active {
     color: hsl(204, 82%, 40%);
   }
-
-textarea {
-  display: block;
-  width: 50vw;
-  height: 100vh;
-  position: fixed;
-  top: 0;
-  left: 0;
-  border: none;
-  border-right: 1px solid #444;
-  padding: 1em;
-  font: 14px/1.5 'Source Code Pro', monospace;
-}
-textarea:focus {
-  outline: none;
-  background: #fafafa;
-}

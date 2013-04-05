@@ -1,4 +1,4 @@
-var capishe = require('capishe'),
+var casper = require('casper'),
     mongoose = require('mongoose'),
     ObjectId = mongoose.Types.ObjectId,
     models = require('./models'),
@@ -32,7 +32,7 @@ api.init = function (app) {
 // Root
 // ===================
 
-app.get('/*?', capishe.noop({
+app.get('/*?', casper.noop({
   status: 'breezy'
 }));
 

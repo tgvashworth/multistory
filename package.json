@@ -16,7 +16,8 @@
     "moment": "~2.0.0",
     "shortid": "~1.0.9",
     "node-uuid": "~1.4.0",
-    "capishe": "0.0.2"
+    "capishe": "0.0.2",
+    "casper": "0.0.6"
   },
   "main": "app.js"
 }

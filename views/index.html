@@ -1,62 +1,14 @@
 <!doctype html>
-<html ng-app="multistory" ng-controller="MultistoryCtrl" ng-cloak>
+<html ng-app ng-cloak>
 <meta charset="utf8">
 <title>Multistory</title>
 
 <link rel="stylesheet" href="/assets/css/fonts.css">
 <link rel="stylesheet" href="/assets/css/app.css">
 
-<header>
-  <h1>multistory</h1>
+<!-- <div ng-view></div> -->
 
-    <a class="sign-in"
-     ng-click="auth()"
-     ng-hide="authenticated">Sign in with Dropbox</a>
-
-  <span class="search">
-    <span class="icon-search"></span>
-    <input ng-model="search" type="search">
-  </span>
-
-  <menu ng-show="authenticated">
-    <a href="#"
-       ng-click="dropbox.open = !dropbox.open">
-      <span class="icon-document"></span>
-      <span ng-show="dropbox.open">Hide</span>
-      <span ng-show="!dropbox.open">Show</span> Files
-    </a>
-  </menu>
-
-  <div class="browser"
-       ng-show="authenticated && dropbox.open">
-    <div class="meta">
-      <span ng-show="path.stack.length">
-        <a ng-click="back()" href="#"><span class="icon-back"></span> Back</a>
-        <em>from</em>
-      </span>
-      <strong>{{path.current}}</strong>
-    </div>
-    <div ng-hide="dropbox.entries">No files.</div>
-    <ul class="files">
-      <li ng-repeat="entry in dropbox.entries">
-        <a class="folder"
-           href="#"
-           ng-click="openFolder(entry.name)"
-           ng-show="entry.isFolder">
-           <span class="icon-folder"></span> {{ entry.name }}
-        </a>
-        <a class="document"
-           href="#"
-           ng-click="openFile(entry.name)"
-           ng-show="!entry.isFolder">
-          <span class="icon-document"></span> {{ entry.name }}
-        </a>
-      </li>
-    </ul>
-  </div>
-</header>
-
-<div ng-view></div>
+<div ng-include=" '/template/landing.html' "></div>
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/dropbox.js/0.9.1/dropbox.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.3/angular.min.js"></script>
