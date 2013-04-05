@@ -1,5 +1,4 @@
-// jelly
-// learningy thingy.
+// multistory
 
 var pkg = require('./package.json'),
     config = require('./config'),
@@ -14,17 +13,9 @@ var pkg = require('./package.json'),
 // Allow namespacing (for API)
 require('express-namespace');
 
-// Database setup
-// mongoose.connect(config.mongo.url);
-// mongoose.set('debug', config.mongo.debug);
-// db.on('error', console.error.bind(console, 'Connection Error:'));
-// db.once('open', function () {
-//   console.log ("Database connection established.");
-// });
-
 var app = express();
 
-app.configure(function(){
+app.configure(function () {
   app.set('port', config.port || 3000);
   app.set('views', __dirname + '/views');
   app.set('view engine', 'html');
@@ -42,11 +33,11 @@ app.configure(function(){
   app.use(app.router);
 });
 
-app.configure('development', function(){
+app.configure('development', function () {
   app.use(express.errorHandler());
 });
 
-app.configure('production', function(){
+app.configure('production', function () {
   app.use(function (req, res, next, err) {
     res.send('There was an error, sorry.');
   });
