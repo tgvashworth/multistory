@@ -86,7 +86,11 @@ angular.module('multistory', ['ms-filters', 'ms-storage', 'ms-parse', 'dropbox']
   // ==================================
   Dropbox.file($location.search().file, function (err, data) {
     $scope.$apply(function () {
-      $scope.sections = parse(data);
+      var sections = parse(data);
+      $scope.sections = sections.map(function (section) {
+        section.show = true;
+        return section;
+      });
     });
   });
 

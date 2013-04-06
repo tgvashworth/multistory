@@ -46,6 +46,7 @@ angular.module('ms-parse', [])
       // array so we maintain the order in the storied file
       if (!groups[groupname]) {
         groups[groupname] = [];
+        groups[groupname].$key = groupname;
         sections.push(groups[groupname]);
       }
 

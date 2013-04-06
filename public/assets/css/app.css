@@ -9,11 +9,11 @@
 body {
   margin: 0;
   padding: 0;
-  font: 16px/1.5 'Open Sans', sans-serif;
+  font: 14px/1.5 'Open Sans', sans-serif;
 }
 
 button, input {
-  font: 16px/1.5 'Open Sans', sans-serif;
+  font: 14px/1.5 'Open Sans', sans-serif;
   max-width: 100%;
 }
 h1, h2, h3, h4 {
@@ -68,6 +68,14 @@ h1, h2, h3, h4 {
   background: #eee;
 }
 
+.view header input[type="search"] {
+  width: 100%;
+}
+
+.view header p {
+  padding: 0 0.444em;
+}
+
 .view .stories {
   width: 80vw;
   padding: 2.5em 1.5em;
@@ -77,8 +85,18 @@ h1, h2, h3, h4 {
   margin: 0;
 }
 
+.stories .section {
+  margin-bottom: 1.5em;
+}
+
 .view .another {
   font-size: 0.667em;
+  text-transform: uppercase;
+  padding: 0 1em;
+}
+
+.view .field {
+  display: block;
 }
 
 /* Dropbox */

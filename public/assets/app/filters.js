@@ -40,7 +40,9 @@ angular.module('ms-filters', [])
 
 .filter('removeEmpty', function () {
   return function (array) {
+    if (!array) return array;
     return array.filter(function (subArray) {
+      if (!subArray) return subArray;
       return !!subArray.length;
     });
   };

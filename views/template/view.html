@@ -4,13 +4,21 @@
       <input type="search"
              ng-model="search">
     </div>
+    <p class="section-picker">
+      <span class="field"
+           ng-repeat="stories in sections | removeEmpty">
+        <input type="checkbox"
+               ng-model="stories.show"> {{stories.$key}}
+      </span>
+    </p>
     <p class="another">
       <a href="/pick">View another file...</a>
     </p>
   </header>
 
   <div class="stories">
-    <div ng-repeat="stories in sections">
+    <div class="section"
+         ng-repeat="stories in sections | removeEmpty | filter:{ show: true }">
       <h2>{{stories.$key}}</h2>
       <ul>
         <li ng-repeat="story in stories | filter:search">
