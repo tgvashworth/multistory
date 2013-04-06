@@ -11,17 +11,6 @@ angular.module('ms-parse', [])
 })
 
 // ==================================
-// Clean up a string
-// ==================================
-.filter('parseCapitalize', function () {
-  return function (text) {
-    return text.replace(/\b([a-z]{2,}|i)\b/g, function (match) {
-      return match.substr(0, 1).toUpperCase() + match.substr(1);
-    });
-  };
-})
-
-// ==================================
 // The big daddy regex
 // ==================================
 .factory('parseRegex', function () {
@@ -57,7 +46,7 @@ angular.module('ms-parse', [])
       // array so we maintain the order in the storied file
       if (!groups[groupname]) {
         groups[groupname] = [];
-        groups[groupname].$key = $filter('parseCapitalize')(groupname);
+        groups[groupname].$key = $filter('capitalize')(groupname);
         sections.push(groups[groupname]);
       }
 

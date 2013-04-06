@@ -70,7 +70,7 @@ angular.module('ms-filters', [])
 // ==================================
 .filter('capitalize', function () {
   return function (text) {
-    return text.replace(/\b([a-z]{2,}|i)\b/g, function (match) {
+    return text.replace(/\b([a-z0-9]{2,}|i)\b/ig, function (match) {
       return match.substr(0, 1).toUpperCase() + match.substr(1);
     });
   };

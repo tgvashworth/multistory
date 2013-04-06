@@ -135,9 +135,9 @@ function ($scope, $filter, $location, $timeout,
     Dropbox.file($scope.view.file, function (err, data) {
       $scope.$apply(function () {
         var sections = parse(data);
-        $scope.sections = sections.map(function (section) {
-          section.show = true;
-          return section;
+        $scope.sections = sections.map(function (stories) {
+          stories.show = !!stories.length;
+          return stories;
         });
         $scope.view.reloading = false;
       });
