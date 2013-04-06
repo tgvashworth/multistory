@@ -18,21 +18,8 @@
 
   <div class="stories">
     <div class="section"
-         ng-repeat="stories in sections | removeEmpty | filter:{ show: true }">
-      <h2>{{stories.$key}}</h2>
-      <ul>
-        <li ng-repeat="story in stories | filter:search">
-          <strong>{{story.who}}</strong>
-          :
-          {{story.what}}
-          :
-          <em>{{story.why}}</em>
-          <span ng-show="story.sizes.length">
-            :
-            <span ng-repeat="size in story.sizes">[{{size}}]</span>
-          </span>
-        </li>
-      </ul>
+         ng-repeat="stories in sections | removeEmpty | filter:{ show: true }"
+         ng-include=" '/template/stories.html' ">
     </div>
     <div ng-hide="sections.length">
       No stories found!

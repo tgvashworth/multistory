@@ -1,0 +1,18 @@
+<h2>{{stories.$key}}</h2>
+<!-- <ul>
+  <li ng-repeat="story in stories | filter:search">
+    <strong>{{story.who}}</strong>
+    :
+    {{story.what}}
+    :
+    <em>{{story.why}}</em>
+    <span ng-show="story.sizes.length">
+      :
+      <span ng-repeat="size in story.sizes">[{{size}}]</span>
+    </span>
+  </li>
+</ul> -->
+
+<div ng-repeat="story in stories | filter:search">
+  {{story.raw}}
+</div>
