@@ -41,8 +41,5 @@
          ng-repeat="stories in sections | removeEmpty | filter:{ show: true }"
          ng-include=" '/template/stories.html' ">
     </div>
-    <div ng-hide="sections.length">
-      No stories found!
-    </div>
   </div>
 </div>

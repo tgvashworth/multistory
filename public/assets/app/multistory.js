@@ -110,7 +110,7 @@ angular.module('multistory', ['ms-filters', 'ms-storage', 'ms-parse', 'dropbox']
 .controller('ViewCtrl', function ($scope, $filter, $location, storage, Dropbox, parse, isAuthenticated, forceLogin) {
   if (!isAuthenticated) { return forceLogin(); }
 
-  $scope.sections = [{raw: 'Loading...'}];
+  $scope.sections = [];
   $scope.view = {
     parsed: false,
     segments: ['who', 'what', 'why', 'sizes'],
