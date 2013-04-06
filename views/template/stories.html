@@ -1,7 +1,7 @@
 <h2>{{stories.$key}}</h2>
 <ul ng-hide="view.raw">
   <li ng-repeat="story in stories | filter:search"
-      ng-hide="(story.who && !view.show.who) && (story.what && !view.show.what) && (story.why && !view.show.why) && (!view.show.sizes || !story.sizes.length)">
+      ng-hide="((story.who && !view.show.who) && (story.what && !view.show.what) && (story.why && !view.show.why)) || (view.show.unsized && story.sizes.length)">
     <span ng-show="view.show.who">As a</span>
     <strong class="who"
             ng-show="view.show.who">{{story.who}}</strong>
@@ -11,7 +11,7 @@
     <span ng-show="view.show.what && view.show.why">so I can</span>
     <strong class="why"
             ng-show="view.show.why">{{story.why}}</strong>
-    <span ng-show="story.sizes.length && view.show.sizes">
+    <span ng-show="story.sizes.length">
       <strong ng-repeat="size in story.sizes">[{{size}}]</strong>
     </span>
   </li>
