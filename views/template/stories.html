@@ -1,5 +1,5 @@
 <h2>{{stories.$key}}</h2>
-<ul ng-hide="view.raw">
+<ul ng-show="view.parsed">
   <li ng-repeat="story in stories | filter:search"
       ng-hide="(story.who && !view.show.who) && (story.what && !view.show.what) && (story.why && !view.show.why) && (!view.show.sizes || !story.sizes.length)"
   >
@@ -16,6 +16,6 @@
 </ul>
 
 <div ng-repeat="story in stories | filter:search"
-     ng-show="view.raw">
+     ng-hide="view.parsed">
   {{story.raw}}
 </div>

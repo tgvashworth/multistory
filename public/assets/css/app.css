@@ -114,10 +114,16 @@ h1, h2, h3, h4 {
 .view .another {
   font-size: 0.667em;
   padding: 0 1em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .view .field {
   display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .field.search {

@@ -18,12 +18,12 @@
     <p class="view-picker">
       <span class="field">
         <input type="checkbox"
-               ng-model="view.raw"> View Raw
+               ng-model="view.parsed"> View Parsed
       </span>
     </p>
 
     <p class="segment-picker"
-       ng-hide="view.raw">
+       ng-show="view.parsed">
       <span class="field"
             ng-repeat="seg in view.segments">
         <input type="checkbox"

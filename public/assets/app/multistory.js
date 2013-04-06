@@ -78,7 +78,7 @@ angular.module('multistory', ['ms-filters', 'ms-storage', 'ms-parse', 'dropbox']
       url = next;
       return $location.url(next);
     }
-    $location.path('/pick');
+    $location.path(url);
   });
 
   $rootScope.$on('dropbox:auth:error', function () {
@@ -110,9 +110,9 @@ angular.module('multistory', ['ms-filters', 'ms-storage', 'ms-parse', 'dropbox']
 .controller('ViewCtrl', function ($scope, $filter, $location, storage, Dropbox, parse, isAuthenticated, forceLogin) {
   if (!isAuthenticated) { return forceLogin(); }
 
-  $scope.sections = [];
+  $scope.sections = [{raw: 'Loading...'}];
   $scope.view = {
-    raw: false,
+    parsed: false,
     segments: ['who', 'what', 'why', 'sizes'],
     show: {
       who: true,
