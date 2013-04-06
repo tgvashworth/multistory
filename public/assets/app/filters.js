@@ -65,4 +65,15 @@ angular.module('ms-filters', [])
   };
 })
 
+// ==================================
+// Capitalize
+// ==================================
+.filter('capitalize', function () {
+  return function (text) {
+    return text.replace(/\b([a-z]{2,}|i)\b/g, function (match) {
+      return match.substr(0, 1).toUpperCase() + match.substr(1);
+    });
+  };
+})
+
 ;

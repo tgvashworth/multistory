@@ -1,9 +1,12 @@
 <div class="view">
   <header>
+    <h1>Multistory</h1>
+
     <div class="field search">
       <input type="search"
              ng-model="search">
     </div>
+
     <p class="section-picker">
       <span class="field"
            ng-repeat="stories in sections | removeEmpty">
@@ -11,6 +14,23 @@
                ng-model="stories.show"> {{stories.$key}}
       </span>
     </p>
+
+    <p class="view-picker">
+      <span class="field">
+        <input type="checkbox"
+               ng-model="view.raw"> View Raw
+      </span>
+    </p>
+
+    <p class="segment-picker"
+       ng-hide="view.raw">
+      <span class="field"
+            ng-repeat="seg in view.segments">
+        <input type="checkbox"
+               ng-model="view.show[seg]"> {{seg | capitalize}}
+      </span>
+    </p>
+
     <p class="another">
       <a href="/pick">View another file...</a>
     </p>

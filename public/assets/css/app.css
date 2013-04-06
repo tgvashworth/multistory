@@ -75,8 +75,19 @@ h1, h2, h3, h4 {
   right: 0;
   bottom: 0;
   width: 20vw;
-  padding: 2.5em 1.5em;
+  padding: 1.5em 1.5em;
   background: #eee;
+}
+
+.view header h1 {
+  text-transform: uppercase;
+  font-size: 1em;
+  text-align: center;
+  position: absolute;
+  bottom: 1.5em;
+  left: 1.5em;
+  right: 1.5em;
+  color: #ddd;
 }
 
 .view header input[type="search"] {
@@ -89,7 +100,7 @@ h1, h2, h3, h4 {
 
 .view .stories {
   width: 80vw;
-  padding: 2.5em 1.5em;
+  padding: 1.5em 1.5em;
 }
 
 .stories ul {

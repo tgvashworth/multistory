@@ -111,6 +111,16 @@ angular.module('multistory', ['ms-filters', 'ms-storage', 'ms-parse', 'dropbox']
   if (!isAuthenticated) { return forceLogin(); }
 
   $scope.sections = [];
+  $scope.view = {
+    raw: false,
+    segments: ['who', 'what', 'why', 'sizes'],
+    show: {
+      who: true,
+      what: true,
+      why: true,
+      sizes: true
+    }
+  };
 
   // ==================================
   // Load the file from search

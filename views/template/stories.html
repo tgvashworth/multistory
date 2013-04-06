@@ -1,18 +1,21 @@
 <h2>{{stories.$key}}</h2>
-<!-- <ul>
-  <li ng-repeat="story in stories | filter:search">
-    <strong>{{story.who}}</strong>
-    :
-    {{story.what}}
-    :
-    <em>{{story.why}}</em>
-    <span ng-show="story.sizes.length">
-      :
+<ul ng-hide="view.raw">
+  <li ng-repeat="story in stories | filter:search"
+      ng-hide="(story.who && !view.show.who) && (story.what && !view.show.what) && (story.why && !view.show.why) && (!view.show.sizes || !story.sizes.length)"
+  >
+    <strong ng-show="view.show.who">{{story.who}}</strong>
+    <span ng-show="view.show.who && view.show.what">:</span>
+    <span ng-show="view.show.what">{{story.what}}</span>
+    <span ng-show="view.show.what && view.show.why">:</span>
+    <em ng-show="view.show.why">{{story.why}}</em>
+    <span ng-show="story.sizes.length && view.show.sizes">
+      <span ng-show="view.show.who || view.show.what || view.show.why">:</span>
       <span ng-repeat="size in story.sizes">[{{size}}]</span>
     </span>
   </li>
-</ul> -->
+</ul>
 
-<div ng-repeat="story in stories | filter:search">
+<div ng-repeat="story in stories | filter:search"
+     ng-show="view.raw">
   {{story.raw}}
 </div>
