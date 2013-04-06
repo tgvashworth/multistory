@@ -107,11 +107,15 @@ angular.module('multistory', ['ms-filters', 'ms-storage', 'ms-parse', 'dropbox']
 // Story viewer
 // ==================================
 
-.controller('ViewCtrl', function ($scope, $filter, $location, storage, Dropbox, parse, isAuthenticated, forceLogin) {
+.controller('ViewCtrl',
+function ($scope, $filter, $location, $timeout,
+          storage, Dropbox, parse, isAuthenticated, forceLogin) {
+
   if (!isAuthenticated) { return forceLogin(); }
 
   $scope.sections = [];
   $scope.view = {
+    file: $location.search().file,
     raw: false,
     highlight: true,
     segments: ['who', 'what', 'why'],
@@ -126,14 +130,25 @@ angular.module('multistory', ['ms-filters', 'ms-storage', 'ms-parse', 'dropbox']
   // ==================================
   // Load the file from search
   // ==================================
-  Dropbox.file($location.search().file, function (err, data) {
-    $scope.$apply(function () {
-      var sections = parse(data);
-      $scope.sections = sections.map(function (section) {
-        section.show = true;
-        return section;
+  $scope.load = function () {
+    $scope.view.reloading = true;
+    Dropbox.file($scope.view.file, function (err, data) {
+      $scope.$apply(function () {
+        var sections = parse(data);
+        $scope.sections = sections.map(function (section) {
+          section.show = true;
+          return section;
+        });
+        $scope.view.reloading = false;
       });
     });
-  });
+  };
+
+  $timeout(function reload(){
+    $scope.load();
+    $timeout(reload, 10000);
+  }, 10000);
+
+  $scope.load();
 
 });
