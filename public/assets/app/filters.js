@@ -61,4 +61,6 @@ angular.module('ms-filters', [])
       return element.isFolder ? true : !!element.name.match(/\.(txt|md)/);
     });
   };
-});
+})
+
+;

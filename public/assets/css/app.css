@@ -83,38 +83,38 @@ h1, h2, h3, h4 {
 
 /* Browser */
 
-.browser ul {
+[dropbox-browser] ul {
   padding: 0;
   list-style: none;
   margin: 0;
 }
 
-.browser .files a {
+[dropbox-browser] .files a {
   display: block;
 }
-  .browser .files a:hover {
+  [dropbox-browser] .files a:hover {
     background: hsl(204, 82%, 97%);
   }
 
-.browser .folder {
+[dropbox-browser] .folder {
   color: #888;
 }
-.browser .document {
+[dropbox-browser] .document {
   color: hsl(204, 82%, 57%);
 }
 
-.meta {
+[dropbox-browser] .meta {
   margin-bottom: 0.444em;
 }
 
-.meta a {
+[dropbox-browser] .meta a {
   font-weight: bold;
   text-decoration: none;
   color: hsl(204, 82%, 57%);
 }
-  .meta a:hover {
+  [dropbox-browser] .meta a:hover {
     color: hsl(204, 82%, 50%);
   }
-  .meta a:active {
+  [dropbox-browser] .meta a:active {
     color: hsl(204, 82%, 40%);
   }
