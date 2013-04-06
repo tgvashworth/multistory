@@ -12,21 +12,24 @@
       <span class="field"
            ng-repeat="stories in sections">
         <input type="checkbox"
-               ng-model="stories.show"> {{stories.$key}}
+               id="show-{{stories.$key}}"
+               ng-model="stories.show"> <label for="show-{{stories.$key}}">{{stories.$key}}</label>
       </span>
     </p>
 
     <p class="view-picker">
       <span class="field">
         <input type="checkbox"
-               ng-model="view.raw"> Raw
+               id="show-raw"
+               ng-model="view.raw"> <label for="show-raw">Raw</label>
       </span>
     </p>
 
     <p class="view-picker">
       <span class="field">
         <input type="checkbox"
-               ng-model="view.subitems"> Sub-items
+               id="show-subitems"
+               ng-model="view.subitems"> <label for="show-subitems">Sub-items</label>
       </span>
     </p>
 
@@ -34,11 +37,13 @@
        ng-hide="view.raw">
       <span class="field">
         <input type="checkbox"
-               ng-model="view.highlight"> Highlight
+               id="show-highlight"
+               ng-model="view.highlight"> <label for="show-highlight">Highlight</label>
       </span>
       <span class="field">
         <input type="checkbox"
-               ng-model="view.show.unsized"> Unsized
+               id="show-unsized"
+               ng-model="view.show.unsized"> <label for="show-unsized">Unsized</label>
       </span>
     </p>
 
@@ -47,7 +52,8 @@
       <span class="field"
             ng-repeat="seg in view.segments">
         <input type="checkbox"
-               ng-model="view.show[seg]"> {{seg | capitalize}}
+               id="show-{{seg}}"
+               ng-model="view.show[seg]"> <label for="show-{{seg}}">{{seg | capitalize}}</label>
       </span>
     </p>
 
