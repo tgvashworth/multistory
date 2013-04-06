@@ -81,9 +81,10 @@ angular.module('multistory', ['ms-filters', 'ms-storage', 'ms-parse', 'dropbox']
 
   $scope.sections = [];
 
+  // ==================================
+  // Load the file from search
+  // ==================================
   Dropbox.file($location.search().file, function (err, data) {
-    console.log.apply(console, [].slice.call(arguments));
-
     $scope.$apply(function () {
       $scope.sections = parse(data);
     });

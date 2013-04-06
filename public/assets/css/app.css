@@ -14,6 +14,7 @@ body {
 
 button, input {
   font: 16px/1.5 'Open Sans', sans-serif;
+  max-width: 100%;
 }
 h1, h2, h3, h4 {
   font-size: 1em;
@@ -54,6 +55,31 @@ h1, h2, h3, h4 {
   .landing section p {
     margin: 0 0 1em;
   }
+
+/* View */
+
+.view header {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 20vw;
+  padding: 2.5em 1.5em;
+  background: #eee;
+}
+
+.view .stories {
+  width: 80vw;
+  padding: 2.5em 1.5em;
+}
+
+.stories ul {
+  margin: 0;
+}
+
+.view .another {
+  font-size: 0.667em;
+}
 
 /* Dropbox */
 

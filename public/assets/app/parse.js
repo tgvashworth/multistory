@@ -56,7 +56,7 @@ angular.module('ms-parse', [])
       if (!res) return;
 
       if (sizes) {
-        cleanedSizes = size.map(function (segment) {
+        cleanedSizes = sizes.map(function (segment) {
           return segment
                   .replace('[', '')
                   .replace(']', '');
