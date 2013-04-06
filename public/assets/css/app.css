@@ -105,6 +105,12 @@ h1, h2, h3, h4 {
 
 .stories ul {
   margin: 0;
+  padding-left: 2.5em;
+}
+
+.parsed ul ul {
+  list-style: none;
+  padding-left: 1.5em;
 }
 
 .stories .section {
@@ -151,6 +157,10 @@ h1, h2, h3, h4 {
   position: relative;
 }
 
+.field.search input {
+  text-indent: 0.667em;
+}
+
 .field.search:after {
   font-family: 'multistory';
   content: "\23";
@@ -162,7 +172,7 @@ h1, h2, h3, h4 {
   -webkit-font-smoothing: antialiased;
   vertical-align: middle;
   position: absolute;
-  right: 0.444em;
+  left: 0.444em;
   top: 0.444em;
   pointer-events: none;
   opacity: 0.4;

@@ -1,5 +1,5 @@
 <h2>{{stories.$key}}</h2>
-<ul ng-hide="view.raw">
+<ul class="parsed" ng-hide="view.raw">
   <li ng-repeat="story in stories | filter:search"
       ng-hide="((story.who && !view.show.who) && (story.what && !view.show.what) && (story.why && !view.show.why)) || (view.show.unsized && story.sizes.length)">
     <span ng-show="view.show.who">As a</span>
@@ -14,10 +14,23 @@
     <span ng-show="story.sizes.length">
       <strong ng-repeat="size in story.sizes">[{{size}}]</strong>
     </span>
+    <ul class="subitems"
+        ng-show="view.subitems">
+      <li ng-repeat="subitem in story.subitems">
+        {{subitem}}
+      </li>
+    </ul>
   </li>
 </ul>
 
-<div ng-repeat="story in stories | filter:search"
-     ng-show="view.raw">
-  {{story.raw}}
-</div>
+<ul class="raw" ng-show="view.raw">
+  <li ng-repeat="story in stories | filter:search">
+    {{story.raw}}
+    <ul class="subitems"
+        ng-show="view.subitems">
+      <li ng-repeat="subitem in story.subitems">
+        {{subitem}}
+      </li>
+    </ul>
+  </li>
+</ul>

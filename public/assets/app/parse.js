@@ -28,7 +28,8 @@ angular.module('ms-parse', [])
     var lines = raw.split('\n'),
         sections = [],
         groups = {},
-        groupname = 'icebox';
+        groupname = 'icebox',
+        lastStory = {};
 
     // Iterate over the lines, extracting stories as we go
     lines.forEach(function (line, index) {
@@ -49,6 +50,15 @@ angular.module('ms-parse', [])
         groups[groupname].$key = $filter('capitalize')(groupname);
         sections.push(groups[groupname]);
       }
+
+
+      // Extract subitems
+      if (line.match(/^\s+/)) {
+        var subitem = line.trim().replace(/^-/, '');
+        return lastStory.subitems.push(subitem);
+      }
+
+      line = line.trim().replace(/^-/, '');
 
       // Match the line!
       var res = line.match(parseRegex),
@@ -77,15 +87,16 @@ angular.module('ms-parse', [])
       cleaned = cleaned.slice(0,2).concat(cleaned.slice(2).join(' '));
 
       // Build the story object
-      var story = {
+      lastStory = {
         who: cleaned[0],
         what: cleaned[1],
         why: cleaned[2],
         sizes: cleanedSizes,
-        raw: line
+        raw: line,
+        subitems: []
       };
 
-      groups[groupname].push(story);
+      groups[groupname].push(lastStory);
 
     });
 

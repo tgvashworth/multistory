@@ -118,6 +118,7 @@ function ($scope, $filter, $location, $timeout,
     file: $location.search().file,
     raw: false,
     highlight: true,
+    subitems: true,
     segments: ['who', 'what', 'why'],
     show: {
       who: true,
