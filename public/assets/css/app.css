@@ -91,9 +91,11 @@ h1, h2, h3, h4 {
 
 [dropbox-browser] .files a {
   display: block;
+  text-decoration: none;
+  padding: 0 0.444em;
 }
   [dropbox-browser] .files a:hover {
-    background: hsl(204, 82%, 97%);
+    background: rgba(0,0,0,.1);
   }
 
 [dropbox-browser] .folder {

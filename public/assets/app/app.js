@@ -1,7 +1,38 @@
 angular.module('multistory', ['ms-filters', 'ms-storage', 'dropbox'])
 
 .config(function ($locationProvider, $routeProvider) {
+
+  var authResolver = function (Dropbox) {
+    return Dropbox.client.isAuthenticated();
+  };
+
   $routeProvider
+
+    .when('/auth/dropbox', {
+      controller: 'AuthCtrl',
+      template: 'Logging you in...'
+    })
+
+    .when('/auth/dropbox/error', {
+      template: 'Login error. Damn.'
+    })
+
+    .when('/pick', {
+      resolve: {
+        isAuthenticated: authResolver
+      },
+      controller: 'PickCtrl',
+      templateUrl: '/template/pick.html'
+    })
+
+    .when('/view', {
+      resolve: {
+        isAuthenticated: authResolver
+      },
+      controller: 'ViewCtrl',
+      templateUrl: '/template/view.html'
+    })
+
     .otherwise({
       templateUrl: '/template/landing.html'
     });
@@ -9,32 +40,44 @@ angular.module('multistory', ['ms-filters', 'ms-storage', 'dropbox'])
   $locationProvider.html5Mode(true);
 })
 
-.controller('MultistoryCtrl', function ($scope, $filter, $location, storage, Dropbox) {
+// ==================================
+// Authenticaton
+// ==================================
 
-  // ==================================
-  // Authentication
-  // ==================================
+.controller('AuthCtrl', function ($rootScope, $location, Dropbox) {
+  $rootScope.$on('dropbox:auth:success', function () {
+    console.log(Dropbox.client);
+    $location.path('/pick');
+  });
 
-  // Trigger auth
-  // $scope.auth = function () {
-  //   dropbox.authenticate();
-  // };
+  $rootScope.$on('dropbox:auth:error', function () {
+    console.log(Dropbox.client);
+    $location.path('/auth/dropbox/error');
+  });
 
-  // ==================================
-  // Dropbox
-  // ==================================
+  Dropbox.authenticate();
+})
 
-  // $scope.$on('dropbox:success', function (e, client) {
-  //   if ($scope.authenticated) return;
-  //   $location
-  //     .search({})
-  //     .replace();
-  //   $scope.authenticated = true;
-  //   $scope.loadStack();
-  // });
+// ==================================
+// Initial file picker
+// ==================================
 
-  // $scope.$on('dropbox:error', function (e, client) {
-  //   $scope.authenticated = false;
-  // });
+.controller('PickCtrl', function ($scope, $filter, $location, storage, Dropbox, isAuthenticated) {
+  if (!isAuthenticated) { return $location.path('/'); }
+
+  $scope.open = true;
+  $scope.loadFile = function (file) {
+    $location.path('/view').search({ path: file.path });
+  };
+})
+
+// ==================================
+// Story viewer
+// ==================================
+
+.controller('ViewCtrl', function ($scope, $filter, $location, storage, Dropbox) {
+  if (!isAuthenticated) { return $location.path('/'); }
+
+
 
 });

@@ -12,10 +12,10 @@ angular.module('dropbox', [])
 
   var doneAuth = function (error, client) {
     $rootScope.$apply(function () {
-      if (error) return $rootScope.$broadcast('dropbox:error', error);
+      if (error) return $rootScope.$broadcast('dropbox:auth:error', error);
 
       api.client = client;
-      $rootScope.$broadcast('dropbox:success', client);
+      $rootScope.$broadcast('dropbox:auth:success', client);
     });
   };
 
@@ -50,71 +50,85 @@ angular.module('dropbox', [])
   };
 })
 
-.directive('dropboxBrowser', function (Dropbox) {
+.directive('dropboxBrowser', function (Dropbox, $filter) {
   return {
     restrict: 'A',
     templateUrl: '/template/dropboxBrowser.html',
     transclude: true,
     scope: {
-      file: '=',
+      file: '=?',
       fileChange: '&?',
       open: '=?'
     },
     link: function (scope, element, attrs) {
 
-      console.log.apply(console, [].slice.call(arguments));
+      // ==================================
+      // File browser models
+      // ==================================
+      scope.path = {
+        dir: function () {
+          return ('/' + scope.path.stack.join('/')).replace(/\/{2,}/, '/');
+        },
+        file: function () {
+          if (!scope.path.fileName) return;
+          return '/' + scope.path.stack.concat(scope.path.fileName).join('/');
+        },
+        fileName: '',
+        stack: [],
+        entries: []
+      };
 
-      scope.$watch('file', function (newValue) {
-        if (attrs.fileChange) {
-          attrs.fileChange.apply(null, [].slice.call(arguments));
-        }
-      });
-
+      // ==================================
+      // Load the stack when opened
+      // ==================================
       scope.$watch('open', function (newValue) {
         if (!!newValue) {
           scope.loadStack();
         }
       });
 
-      scope.path = {
-        current: function () {
-          return ('/' + scope.path.stack.join('/')).replace(/\/+/, '/');
-        },
-        stack: [],
-        entries: []
-      };
-
+      // ==================================
+      // Load the current directory stack
+      // ==================================
       scope.loadStack = function () {
         scope.path.entries = [{name: 'Loading...'}];
-        Dropbox.dir(scope.path.current(), function (err, entries) {
+        Dropbox.dir(scope.path.dir(), function (err, entries) {
           scope.$apply(function () {
             if (err) { return scope.path.entries = [{name: 'Error.'}]; }
-            scope.dropbox.entries = $filter('fileType')(angular.copy(entries));
+            scope.path.entries = $filter('fileType')(angular.copy(entries));
           });
         });
       };
 
+      // ==================================
+      // Open the clicked folder
+      // ==================================
       scope.openFolder = function (name) {
         scope.path.stack.push(name);
         scope.loadStack();
       };
 
-      scope.openFile = function (name) {
-        var stack = angular.copy(scope.path.stack),
-            path;
-        stack.push(name);
-        path = '/' + stack.join('/');
-        Dropbox.file(path, function (err, data) {
-          scope.$apply(function () {
-            if (err) { return scope.path.entries = [{name: 'Error.'}]; }
-            scope.file = data;
-          });
-        });
-      };
-
+      // ==================================
+      // Navigate back (up) through the stack
+      // ==================================
       scope.back = function () {
         scope.path.stack.pop();
         scope.loadStack();
+      };
+
+      // ==================================
+      // Open the clicked file
+      // ==================================
+      scope.openFile = function (name) {
+        scope.path.fileName = name;
+        if (attrs.fileChange) {
+          scope.fileChange({
+            file: {
+              dir: scope.path.dir(),
+              path: scope.path.file()
+            }
+          });
+        }
       };
 
     }
