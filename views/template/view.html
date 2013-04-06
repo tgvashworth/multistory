@@ -18,12 +18,20 @@
     <p class="view-picker">
       <span class="field">
         <input type="checkbox"
-               ng-model="view.parsed"> View Parsed
+               ng-model="view.raw"> View Raw
+      </span>
+    </p>
+
+    <p class="view-picker"
+       ng-hide="view.raw">
+      <span class="field">
+        <input type="checkbox"
+               ng-model="view.highlight"> Highlight
       </span>
     </p>
 
     <p class="segment-picker"
-       ng-show="view.parsed">
+       ng-hide="view.raw">
       <span class="field"
             ng-repeat="seg in view.segments">
         <input type="checkbox"
@@ -32,11 +40,12 @@
     </p>
 
     <p class="another">
-      <a href="/pick">View another file...</a>
+      <a href="/pick">View another file&hellip;</a>
     </p>
   </header>
 
-  <div class="stories">
+  <div class="stories"
+       ng-class="{ highlight: view.highlight }">
     <div class="section"
          ng-repeat="stories in sections | removeEmpty | filter:{ show: true }"
          ng-include=" '/template/stories.html' ">

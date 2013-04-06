@@ -111,9 +111,26 @@ h1, h2, h3, h4 {
   margin-bottom: 1.5em;
 }
 
+.stories .who,
+.stories .what,
+.stories .why {
+  font-weight: normal;
+}
+
+.highlight .who {
+  background: #c3fcbd;
+}
+
+.highlight .what {
+  background: #fffda2;
+}
+
+.highlight .why {
+  background: #ffd4df;
+}
+
 .view .another {
-  font-size: 0.667em;
-  padding: 0 1em;
+  padding: 0 0.667em;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

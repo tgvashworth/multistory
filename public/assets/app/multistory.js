@@ -112,7 +112,8 @@ angular.module('multistory', ['ms-filters', 'ms-storage', 'ms-parse', 'dropbox']
 
   $scope.sections = [];
   $scope.view = {
-    parsed: false,
+    raw: false,
+    highlight: true,
     segments: ['who', 'what', 'why', 'sizes'],
     show: {
       who: true,
