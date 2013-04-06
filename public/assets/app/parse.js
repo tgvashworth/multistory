@@ -1,4 +1,4 @@
-angular.module('parse', [])
+angular.module('ms-parse', [])
 
 // ==================================
 // Clean up a string
@@ -46,7 +46,7 @@ angular.module('parse', [])
       // array so we maintain the order in the storied file
       if (!groups[groupname]) {
         groups[groupname] = [];
-        sections.push(group);
+        sections.push(groups[groupname]);
       }
 
       // Match the line!

@@ -1,4 +1,4 @@
-angular.module('multistory', ['ms-filters', 'ms-storage', 'dropbox'])
+angular.module('multistory', ['ms-filters', 'ms-storage', 'ms-parse', 'dropbox'])
 
 .config(function ($locationProvider, $routeProvider) {
 
@@ -67,7 +67,8 @@ angular.module('multistory', ['ms-filters', 'ms-storage', 'dropbox'])
 
   $scope.open = true;
   $scope.loadFile = function (file) {
-    $location.path('/view').search({ path: file.path });
+    console.log(file);
+    $location.path('/view').search({ file: file.path });
   };
 })
 
@@ -75,9 +76,17 @@ angular.module('multistory', ['ms-filters', 'ms-storage', 'dropbox'])
 // Story viewer
 // ==================================
 
-.controller('ViewCtrl', function ($scope, $filter, $location, storage, Dropbox) {
+.controller('ViewCtrl', function ($scope, $filter, $location, storage, Dropbox, parse, isAuthenticated) {
   if (!isAuthenticated) { return $location.path('/'); }
 
+  $scope.sections = [];
 
+  Dropbox.file($location.search().file, function (err, data) {
+    console.log.apply(console, [].slice.call(arguments));
+
+    $scope.$apply(function () {
+      $scope.sections = parse(data);
+    });
+  });
 
 });

@@ -1,0 +1,30 @@
+<header>
+  <div class="field">
+    <input type="search"
+           ng-model="search">
+ </div>
+  <div dropbox-browser
+       open="showFiles"></div>
+</header>
+
+<div class="stories">
+  <div ng-repeat="stories in sections">
+    <h2>{{stories.$key}}</h2>
+    <ul>
+      <li ng-repeat="story in stories | filter:search">
+        <strong>{{story.who}}</strong>
+        :
+        {{story.what}}
+        :
+        <em>{{story.why}}</em>
+        <span ng-show="story.sizes.length">
+          :
+          <span ng-repeat="size in story.sizes">[{{size}}]</span>
+        </span>
+      </li>
+    </ul>
+  </div>
+  <div ng-hide="sections.length">
+    No stories found!
+  </div>
+</div>
