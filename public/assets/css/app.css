@@ -108,9 +108,10 @@ h1, h2, h3, h4 {
   padding-left: 2.5em;
 }
 
-.parsed ul ul {
+.parsed ul {
   list-style: none;
   padding-left: 1.5em;
+  color: #aaa;
 }
 
 .stories .section {
