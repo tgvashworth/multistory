@@ -10,11 +10,7 @@ angular.module('multistory', ['ms-filters', 'ms-storage', 'ms-parse', 'dropbox']
 
     .when('/auth/dropbox', {
       controller: 'AuthCtrl',
-      template: 'Logging you in...'
-    })
-
-    .when('/auth/dropbox/error', {
-      template: 'Login error. Damn.'
+      templateUrl: '/template/auth.html'
     })
 
     .when('/pick', {
@@ -34,25 +30,60 @@ angular.module('multistory', ['ms-filters', 'ms-storage', 'ms-parse', 'dropbox']
     })
 
     .otherwise({
+      controller: 'LandingCtrl',
       templateUrl: '/template/landing.html'
     });
 
   $locationProvider.html5Mode(true);
 })
 
+.factory('forceLogin', function ($location) {
+  return function (next) {
+    next = next || $location.url();
+    return $location
+             .path('/auth/dropbox')
+             .search({
+               next: next
+             })
+             .replace();
+  };
+})
+
+// ==================================
+// Landing
+// ==================================
+
+.controller('LandingCtrl', function ($scope, $location, storage) {
+  if (storage.get('auth')) {
+    $location.path('/auth/dropbox').replace();
+  }
+})
+
 // ==================================
 // Authenticaton
 // ==================================
 
-.controller('AuthCtrl', function ($rootScope, $location, Dropbox) {
+.controller('AuthCtrl', function ($scope, $rootScope, $location, storage, Dropbox) {
+  $scope.msg = 'Logging you in...';
+
+  if ($location.search().next) {
+    storage.save('auth:next', $location.search().next);
+  }
+
   $rootScope.$on('dropbox:auth:success', function () {
-    console.log(Dropbox.client);
+    var next = storage.get('auth:next'),
+        url = '/pick';
+    storage.rm('auth:next');
+    if (next) {
+      url = next;
+      return $location.url(next);
+    }
     $location.path('/pick');
   });
 
   $rootScope.$on('dropbox:auth:error', function () {
     console.log(Dropbox.client);
-    $location.path('/auth/dropbox/error');
+    $location.path('/');
   });
 
   Dropbox.authenticate();
@@ -62,8 +93,8 @@ angular.module('multistory', ['ms-filters', 'ms-storage', 'ms-parse', 'dropbox']
 // Initial file picker
 // ==================================
 
-.controller('PickCtrl', function ($scope, $filter, $location, storage, Dropbox, isAuthenticated) {
-  if (!isAuthenticated) { return $location.path('/'); }
+.controller('PickCtrl', function ($scope, $filter, $location, storage, Dropbox, isAuthenticated, forceLogin) {
+  if (!isAuthenticated) { return forceLogin(); }
 
   $scope.open = true;
   $scope.loadFile = function (file) {
@@ -76,8 +107,8 @@ angular.module('multistory', ['ms-filters', 'ms-storage', 'ms-parse', 'dropbox']
 // Story viewer
 // ==================================
 
-.controller('ViewCtrl', function ($scope, $filter, $location, storage, Dropbox, parse, isAuthenticated) {
-  if (!isAuthenticated) { return $location.path('/'); }
+.controller('ViewCtrl', function ($scope, $filter, $location, storage, Dropbox, parse, isAuthenticated, forceLogin) {
+  if (!isAuthenticated) { return forceLogin(); }
 
   $scope.sections = [];
 

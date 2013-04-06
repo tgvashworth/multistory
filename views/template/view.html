@@ -1,6 +1,6 @@
 <div class="view">
   <header>
-    <div class="field">
+    <div class="field search">
       <input type="search"
              ng-model="search">
     </div>
@@ -21,7 +21,7 @@
          ng-repeat="stories in sections | removeEmpty | filter:{ show: true }">
       <h2>{{stories.$key}}</h2>
       <ul>
-        <li ng-repeat="story in stories | filter:search">
+        <li ng-repeat="story in stories | filter:{ who: search, what: search, why: search }">
           <strong>{{story.who}}</strong>
           :
           {{story.what}}

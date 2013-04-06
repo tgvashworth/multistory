@@ -3,10 +3,20 @@ angular.module('ms-storage', [])
 .factory('storage', function () {
   return {
     get: function (identifier) {
-      return JSON.parse(localStorage.getItem(identifier)) || undefined;
+      var result = localStorage.getItem(identifier);
+      try {
+        result = JSON.parse(result);
+      } catch(e) {}
+      return result || undefined;
     },
     save: function (identifier, data) {
-      return localStorage.setItem(identifier, JSON.stringify(data));
+      if (angular.isObject(data)) {
+        data = JSON.stringify(data);
+      }
+      return localStorage.setItem(identifier, data);
+    },
+    rm: function (identifier) {
+      return localStorage.removeItem(identifier);
     }
   };
 });

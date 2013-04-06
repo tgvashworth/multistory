@@ -11,6 +11,17 @@ angular.module('ms-parse', [])
 })
 
 // ==================================
+// Clean up a string
+// ==================================
+.filter('parseCapitalize', function () {
+  return function (text) {
+    return text.replace(/\b([a-z]{2,}|i)\b/g, function (match) {
+      return match.substr(0, 1).toUpperCase() + match.substr(1);
+    });
+  };
+})
+
+// ==================================
 // The big daddy regex
 // ==================================
 .factory('parseRegex', function () {
@@ -20,7 +31,7 @@ angular.module('ms-parse', [])
 // ==================================
 // Parse the raw user stories file
 // ==================================
-.factory('parse', function (parseClean, parseRegex) {
+.factory('parse', function (parseClean, parseRegex, $filter) {
 
   return function (raw) {
     raw = raw || '';
@@ -46,7 +57,7 @@ angular.module('ms-parse', [])
       // array so we maintain the order in the storied file
       if (!groups[groupname]) {
         groups[groupname] = [];
-        groups[groupname].$key = groupname;
+        groups[groupname].$key = $filter('parseCapitalize')(groupname);
         sections.push(groups[groupname]);
       }
 
@@ -70,8 +81,8 @@ angular.module('ms-parse', [])
                     .replace(',', '')
                     .replace(/as a/i, '')
                     .trim();
-        if (index === 0) str = str.replace(/ i/i, '').trim();
-        return str.toLowerCase();
+        if (index === 0) str = str.replace(/ i/i, '');
+        return parseClean(str);
       });
 
       cleaned = cleaned.slice(0,2).concat(cleaned.slice(2).join(' '));
@@ -81,7 +92,8 @@ angular.module('ms-parse', [])
         who: cleaned[0],
         what: cleaned[1],
         why: cleaned[2],
-        sizes: cleanedSizes
+        sizes: cleanedSizes,
+        raw: line
       };
 
       groups[groupname].push(story);

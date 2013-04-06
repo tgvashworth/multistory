@@ -55,6 +55,17 @@ h1, h2, h3, h4 {
   .landing section p {
     margin: 0 0 1em;
   }
+  .landing section:last-of-type,
+  .landing section p:last-of-type {
+    margin-bottom: 0;
+  }
+
+/* Auth */
+
+.auth {
+  padding: 2.5em;
+  text-align: center;
+}
 
 /* View */
 
@@ -97,6 +108,23 @@ h1, h2, h3, h4 {
 
 .view .field {
   display: block;
+}
+
+.field.search {
+  position: relative;
+}
+
+.field.search:after {
+  font-family: 'multistory';
+  content: attr(data-icon);
+  speak: none;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  position: absolute;
+  right: 0;
 }
 
 /* Dropbox */
