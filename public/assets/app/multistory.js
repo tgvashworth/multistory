@@ -119,6 +119,7 @@ function ($scope, $filter, $location, $timeout,
     raw: false,
     highlight: true,
     subitems: true,
+    autoupdate: true,
     segments: ['who', 'what', 'why'],
     show: {
       who: true,
@@ -128,10 +129,15 @@ function ($scope, $filter, $location, $timeout,
     }
   };
 
+  $scope.searchFor = function (text) {
+    $scope.search = text;
+  };
+
   // ==================================
   // Load the file from search
   // ==================================
   $scope.load = function () {
+    if (!$scope.view.autoupdate) return;
     $scope.view.reloading = true;
     Dropbox.file($scope.view.file, function (err, data) {
       $scope.$apply(function () {

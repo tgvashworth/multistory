@@ -17,7 +17,12 @@
     <ul class="subitems"
         ng-show="view.subitems">
       <li ng-repeat="subitem in story.subitems">
-        {{subitem}}
+        <span ng-repeat="segment in subitem">
+          <a href="#"
+             ng-click="searchFor(segment.raw)"
+             ng-show="segment.mention || segment.hashtag">{{segment.raw}}</a>
+          <span ng-show="segment.text">{{segment.raw}}</span>
+        </span>
       </li>
     </ul>
   </li>
@@ -29,7 +34,7 @@
     <ul class="subitems"
         ng-show="view.subitems">
       <li ng-repeat="subitem in story.subitems">
-        {{subitem}}
+        {{subitem.original}}
       </li>
     </ul>
   </li>

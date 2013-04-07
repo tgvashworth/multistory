@@ -18,9 +18,50 @@ angular.module('ms-parse', [])
 })
 
 // ==================================
+// Parse subitem
+// ==================================
+.factory('parseSubitem', function () {
+  return function (line) {
+    line = line.trim().replace(/^-/, '');
+    // Extract the different segments
+    var text = line.split(/\s?[#@]\w+\s?/g),
+        entities = line.match(/[#@]\w+/g),
+        segments = [];
+    // Interpolate them back together
+    while (text.length) {
+      segments.push(text.shift());
+      if (entities && entities.length) {
+        segments.push(entities.shift());
+      }
+    }
+    // Remove the duffers and then convert them into objects to use later
+    segments = segments.filter(function (seg) {
+      return !!seg;
+    }).map(function (seg) {
+      var obj = {
+        hashtag: false,
+        mention: false,
+        text: false,
+        raw: seg
+      };
+      if (seg.match(/#\w+/)) {
+        obj.hashtag = true;
+      } else if (seg.match(/@\w+/)) {
+        obj.mention = true;
+      } else {
+        obj.text = true;
+      }
+      return obj;
+    });
+    segments.original = line;
+    return segments;
+  };
+})
+
+// ==================================
 // Parse the raw user stories file
 // ==================================
-.factory('parse', function (parseClean, parseRegex, $filter) {
+.factory('parse', function (parseClean, parseRegex, parseSubitem, $filter) {
 
   return function (raw) {
     raw = raw || '';
@@ -54,7 +95,7 @@ angular.module('ms-parse', [])
 
       // Extract subitems
       if (line.match(/^\s+/)) {
-        var subitem = line.trim().replace(/^-/, '');
+        var subitem = parseSubitem(line);
         return lastStory.subitems.push(subitem);
       }
 
