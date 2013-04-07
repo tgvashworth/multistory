@@ -1,6 +1,8 @@
 angular.module('dropbox', [])
 
-.factory('Dropbox', function ($rootScope, $location) {
+.factory('Dropbox', [
+  '$rootScope', '$location',
+function ($rootScope, $location) {
 
   var client = new Dropbox.Client({
       key: "FGaYi1AdNxA=|ooVqJg/bZ06ETSKUK8FWlQ9vT9dKEdomuRRDFjqRtw=="
@@ -40,7 +42,7 @@ angular.module('dropbox', [])
 
   return api;
 
-})
+}])
 
 .filter('fileType', function () {
   return function (array) {
@@ -50,7 +52,9 @@ angular.module('dropbox', [])
   };
 })
 
-.directive('dropboxBrowser', function (Dropbox, $filter) {
+.directive('dropboxBrowser', [
+  'Dropbox', '$filter',
+function (Dropbox, $filter) {
   return {
     restrict: 'A',
     templateUrl: '/template/dropboxBrowser.html',
@@ -133,6 +137,6 @@ angular.module('dropbox', [])
 
     }
   };
-})
+}])
 
 ;

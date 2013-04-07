@@ -1,6 +1,8 @@
 angular.module('multistory', ['ms-filters', 'ms-storage', 'ms-parse', 'dropbox'])
 
-.config(function ($locationProvider, $routeProvider) {
+.config([
+  '$locationProvider', '$routeProvider',
+function ($locationProvider, $routeProvider) {
 
   var authResolver = function (Dropbox) {
     return Dropbox.client.isAuthenticated();
@@ -35,9 +37,11 @@ angular.module('multistory', ['ms-filters', 'ms-storage', 'ms-parse', 'dropbox']
     });
 
   $locationProvider.html5Mode(true);
-})
+}])
 
-.factory('forceLogin', function ($location) {
+.factory('forceLogin', [
+  '$location',
+function ($location) {
   return function (next) {
     next = next || $location.url();
     return $location
@@ -47,23 +51,28 @@ angular.module('multistory', ['ms-filters', 'ms-storage', 'ms-parse', 'dropbox']
              })
              .replace();
   };
-})
+}])
 
 // ==================================
 // Landing
 // ==================================
 
-.controller('LandingCtrl', function ($scope, $location, storage) {
+.controller('LandingCtrl', [
+  '$scope', '$location', 'storage',
+function ($scope, $location, storage) {
   if (storage.get('auth')) {
     $location.path('/auth/dropbox').replace();
   }
-})
+}])
 
 // ==================================
 // Authenticaton
 // ==================================
 
-.controller('AuthCtrl', function ($scope, $rootScope, $location, storage, Dropbox) {
+.controller('AuthCtrl', [
+  '$scope', '$rootScope', '$location',
+  'storage', 'Dropbox',
+function ($scope, $rootScope, $location, storage, Dropbox) {
   $scope.msg = 'Logging you in...';
 
   if ($location.search().next) {
@@ -87,13 +96,16 @@ angular.module('multistory', ['ms-filters', 'ms-storage', 'ms-parse', 'dropbox']
   });
 
   Dropbox.authenticate();
-})
+}])
 
 // ==================================
 // Initial file picker
 // ==================================
 
-.controller('PickCtrl', function ($scope, $filter, $location, storage, Dropbox, isAuthenticated, forceLogin) {
+.controller('PickCtrl', [
+  '$scope', '$filter', '$location',
+  'storage', 'Dropbox', 'isAuthenticated', 'forceLogin',
+function ($scope, $filter, $location, storage, Dropbox, isAuthenticated, forceLogin) {
   if (!isAuthenticated) { return forceLogin(); }
 
   $scope.open = true;
@@ -101,13 +113,15 @@ angular.module('multistory', ['ms-filters', 'ms-storage', 'ms-parse', 'dropbox']
     console.log(file);
     $location.path('/view').search({ file: file.path });
   };
-})
+}])
 
 // ==================================
 // Story viewer
 // ==================================
 
-.controller('ViewCtrl',
+.controller('ViewCtrl', [
+  '$scope', '$filter', '$location', '$timeout',
+  'storage', 'Dropbox', 'parse', 'isAuthenticated', 'forceLogin',
 function ($scope, $filter, $location, $timeout,
           storage, Dropbox, parse, isAuthenticated, forceLogin) {
 
@@ -158,4 +172,4 @@ function ($scope, $filter, $location, $timeout,
 
   $scope.load();
 
-});
+}]);

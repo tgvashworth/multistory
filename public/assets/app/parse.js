@@ -61,7 +61,9 @@ angular.module('ms-parse', [])
 // ==================================
 // Parse the raw user stories file
 // ==================================
-.factory('parse', function (parseClean, parseRegex, parseSubitem, $filter) {
+.factory('parse', [
+  'parseClean', 'parseRegex', 'parseSubitem', '$filter',
+function (parseClean, parseRegex, parseSubitem, $filter) {
 
   return function (raw) {
     raw = raw || '';
@@ -145,6 +147,6 @@ angular.module('ms-parse', [])
 
   };
 
-})
+}])
 
 ;
