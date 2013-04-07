@@ -17,19 +17,19 @@ module.exports = function(grunt) {
       },
       css: {
         src: 'public/assets/css/**/**.css',
-        dest: 'public/assets/build/pre-build.css'
+        dest: 'public/assets/build/build.css'
       }
     },
     cssmin: {
       css: {
         src: '<%= concat.css.dest %>',
-        dest: 'public/assets/build/build.css'
+        dest: '<%= concat.css.dest %>'
       }
     },
     ngmin: {
       ng: {
         src: 'public/assets/app/**/*.js',
-        dest: 'public/assets/build/pre-build.js'
+        dest: 'public/assets/build/build.js'
       }
     },
     uglify: {
@@ -38,7 +38,7 @@ module.exports = function(grunt) {
           mangle: false
         },
         src: '<%= ngmin.ng.dest %>',
-        dest: 'public/assets/build/build.js'
+        dest: '<%= ngmin.ng.dest %>'
       }
     },
     qunit: {
