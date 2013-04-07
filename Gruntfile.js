@@ -51,11 +51,11 @@ module.exports = function(grunt) {
       },
       ng: {
         files: '<%= ngmin.ng.src %>',
-        tasks: ['ngmin', 'uglify']
+        tasks: ['ngmin']
       },
       css: {
         files: '<%= concat.css.src %>',
-        tasks: ['concat', 'cssmin']
+        tasks: ['concat']
       }
     }
   });

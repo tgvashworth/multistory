@@ -18,12 +18,37 @@ angular.module('ms-parse', [])
 })
 
 // ==================================
+// The size regex
+// ==================================
+.factory('parseSizeRegex', function () {
+  return (/\[.+?\]/g);
+})
+
+// ==================================
+// Sort out a size array
+// ==================================
+.factory('parseSizes', function () {
+  return function (sizes) {
+    return sizes.map(function (segment) {
+      return segment
+              .replace('[', '')
+              .replace(']', '');
+    });
+  };
+})
+
+// ==================================
 // Parse subitem
 // ==================================
-.factory('parseSubitem', function () {
-  return function (line) {
-    line = line.trim().replace(/^-/, '');
+.factory('parseSubitem', [
+  'parseSizes', 'parseSizeRegex',
+function (parseSizes, parseSizeRegex) {
+  return function (originalLine) {
+    originalLine = originalLine.trim().replace(/^-/, '');
     // Extract the different segments
+    var sizes = originalLine.match(parseSizeRegex),
+        line = originalLine.replace(parseSizeRegex, '');
+
     var text = line.split(/\s?[#@]\w+\s?/g),
         entities = line.match(/[#@]\w+/g),
         segments = [];
@@ -35,12 +60,13 @@ angular.module('ms-parse', [])
       }
     }
     // Remove the duffers and then convert them into objects to use later
-    segments = segments.filter(function (seg) {
+    var subitem = segments.filter(function (seg) {
       return !!seg;
     }).map(function (seg) {
       var obj = {
         hashtag: false,
         mention: false,
+        size: false,
         text: false,
         raw: seg
       };
@@ -53,17 +79,23 @@ angular.module('ms-parse', [])
       }
       return obj;
     });
-    segments.original = line;
-    return segments;
+
+    // Parse sizes
+    if (sizes) {
+      subitem.sizes = parseSizes(sizes);
+    }
+
+    subitem.original = originalLine;
+    return subitem;
   };
-})
+}])
 
 // ==================================
 // Parse the raw user stories file
 // ==================================
 .factory('parse', [
-  'parseClean', 'parseRegex', 'parseSubitem', '$filter',
-function (parseClean, parseRegex, parseSubitem, $filter) {
+  'parseClean', 'parseRegex', 'parseSubitem', '$filter', 'parseSizes', 'parseSizeRegex',
+function (parseClean, parseRegex, parseSubitem, $filter, parseSizes, parseSizeRegex) {
 
   return function (raw) {
     raw = raw || '';
@@ -105,16 +137,12 @@ function (parseClean, parseRegex, parseSubitem, $filter) {
 
       // Match the line!
       var res = line.match(parseRegex),
-          sizes = line.match(/\[.+?\]/g);
+          sizes = line.match(parseSizeRegex);
 
       if (!res) return;
 
       if (sizes) {
-        cleanedSizes = sizes.map(function (segment) {
-          return segment
-                  .replace('[', '')
-                  .replace(']', '');
-        });
+        cleanedSizes = parseSizes(sizes);
       }
 
       // Clean the segments up, to account for a poorish regex

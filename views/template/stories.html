@@ -23,6 +23,9 @@
              ng-show="segment.mention || segment.hashtag">{{segment.raw}}</a>
           <span ng-show="segment.text">{{segment.raw}}</span>
         </span>
+        <span ng-show="subitem.sizes.length">
+          <strong ng-repeat="size in subitem.sizes">[{{size}}]</strong>
+        </span>
       </li>
     </ul>
   </li>
