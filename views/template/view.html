@@ -4,7 +4,7 @@
 
     <div class="field search">
       <input type="search"
-             placeholder="Search"
+             placeholder="Filter user stories"
              ng-model="search">
     </div>
 
@@ -16,7 +16,9 @@
                ng-model="stories.show"> <label for="show-{{stories.$key}}">{{stories.$key}}</label>
       </span>
     </p>
-
+    
+<fieldset>
+	<legend>Developer bits</legend>
     <p class="view-picker">
       <span class="field">
         <input type="checkbox"
@@ -29,6 +31,7 @@
                ng-model="view.autoupdate"> <label for="show-autoupdate">Auto-update (dev)</label>
       </span>
     </p>
+</fieldset>
 
     <p class="view-picker">
       <span class="field">

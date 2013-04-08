@@ -24,6 +24,8 @@ h1, h2, h3, h4 {
   font-size: 1em;
   margin: 0;
   font-weight: medium;
+  margin-top: -1.25rem;
+  padding-top: 0;
 }
 
 /* Landing page */
