@@ -101,6 +101,7 @@ h1, h2, h3, h4 {
 
 .view header input[type="search"] {
   width: 100%;
+  font-size: 18px;
 }
 
 .view header p {
@@ -185,8 +186,8 @@ h1, h2, h3, h4 {
   position: relative;
 }
 
-.field.search input {
-  text-indent: 0.667em;
+/*.field.search input {
+  text-indent: 0.5em;
 }
 
 .field.search:after {
@@ -204,7 +205,7 @@ h1, h2, h3, h4 {
   top: 0.444em;
   pointer-events: none;
   opacity: 0.4;
-}
+}*/
 
 /* Dropbox */
 
