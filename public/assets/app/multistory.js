@@ -152,15 +152,28 @@ function ($scope, $filter, $location, $timeout,
   // ==================================
   $scope.load = function () {
     if (!$scope.view.autoupdate) return;
-    $scope.view.reloading = true;
     Dropbox.file($scope.view.file, function (err, data) {
+      // Alert the error, or get out if nothing was returned
+      if (err) return alert(err);
+      if (!data) return;
       $scope.$apply(function () {
+        // Indicate that things are reloading
+        $scope.view.reloading = true;
+        $timeout(function () {
+          $scope.view.reloading = false;
+        }, 500);
+        // Parse the sections from the file data
         var sections = parse(data);
         $scope.sections = sections.map(function (stories) {
-          stories.show = !!stories.length;
+          // Maintain which sections are shown
+          var matchingSections = $filter('filter')($scope.sections, { $key: stories.$key });
+          if (matchingSections.length) {
+            stories.show = matchingSections[0].show;
+          } else {
+            stories.show = !!stories.length;
+          }
           return stories;
         });
-        $scope.view.reloading = false;
       });
     });
   };
