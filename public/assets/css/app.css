@@ -1,3 +1,5 @@
+/* @override http://localhost:3000/assets/css/app.css */
+
 * { box-sizing: border-box; }
 
 [ng-cloak] {
@@ -9,16 +11,19 @@
 body {
   margin: 0;
   padding: 0;
-  font: 14px/1.5 'Open Sans', sans-serif;
+  font: 300 13px/1.75 "Helvetica Neue", "Open Sans", sans-serif;
+  background-color: #fefefe;
+  text-shadow: 1px 1px 0px rgba(255,255,255,0.5);
 }
 
 button, input {
-  font: 14px/1.5 'Open Sans', sans-serif;
+  font: 14px/1.5 "Helvetica Neue", "Open Sans", sans-serif;
   max-width: 100%;
 }
 h1, h2, h3, h4 {
   font-size: 1em;
   margin: 0;
+  font-weight: medium;
 }
 
 /* Landing page */
@@ -75,8 +80,9 @@ h1, h2, h3, h4 {
   right: 0;
   bottom: 0;
   width: 20vw;
+  min-width: 13rem;
   padding: 1.5em 1.5em;
-  background: #eee;
+  background: #e3f4fb;
 }
 
 .view header h1 {
@@ -98,20 +104,35 @@ h1, h2, h3, h4 {
   padding: 0 0.444em;
 }
 
+.view header a {
+	color: #1a99fc;
+	font-weight: medium;
+	text-decoration: none;
+}
+
+.view header label {
+	font-weight: bold;
+}
+
 .view .stories {
   width: 80vw;
   padding: 1.5em 1.5em;
 }
 
+.stories a {
+	color: #000;
+}
+
 .stories ul {
   margin: 0;
-  padding-left: 2.5em;
+  padding-left: 0;
+  list-style: none;
 }
 
 .parsed ul {
   list-style: none;
-  padding-left: 1.5em;
-  color: #aaa;
+  padding-left: 2.5em;
+/*  color: #aaa;*/
 }
 
 .stories .section {
@@ -121,19 +142,21 @@ h1, h2, h3, h4 {
 .stories .who,
 .stories .what,
 .stories .why {
-  font-weight: normal;
+  font-weight: 300;
+  padding-left:   2px;
+  padding-right:  2px;
 }
 
 .highlight .who {
-  background: #c3fcbd;
+  background: #cafbbb;
 }
 
 .highlight .what {
-  background: #fffda2;
+  background: #fffc9f;
 }
 
 .highlight .why {
-  background: #ffd4df;
+  background: #fed4df;
 }
 
 .view .another {
@@ -144,7 +167,7 @@ h1, h2, h3, h4 {
 }
 
 .view .reloading {
-  color: #ddd;
+  color: rgba(0,0,0,0.25);
 }
 
 .view .field {
