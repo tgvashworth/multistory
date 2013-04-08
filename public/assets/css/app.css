@@ -11,7 +11,7 @@
 body {
   margin: 0;
   padding: 0;
-  font: 300 13px/1.75 "Helvetica Neue", "Open Sans", sans-serif;
+  font: 300 14px/1.75 "Helvetica Neue", "Open Sans", sans-serif;
   background-color: #fefefe;
   text-shadow: 1px 1px 0px rgba(255,255,255,0.5);
 }
@@ -76,13 +76,14 @@ h1, h2, h3, h4 {
 
 /* View */
 
+/*flexbox experiment*/
 .view header {
   position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
   width: 20vw;
-  min-width: 13rem;
+/*  min-width: 13rem;*/
   padding: 1.5em 1.5em;
   background: #e3f4fb;
 }
@@ -116,6 +117,7 @@ h1, h2, h3, h4 {
 	font-weight: bold;
 }
 
+/*flexbox experiment*/
 .view .stories {
   width: 80vw;
   padding: 1.5em 1.5em;
@@ -269,3 +271,25 @@ h1, h2, h3, h4 {
   [dropbox-browser] .meta a:active {
     color: hsl(204, 82%, 40%);
   }
+  
+  
+  
+  
+  
+/*flexbox experiment - I don’t know why but this didn’t work -@yandle*/
+/*.view {
+	display: flex;
+	}
+  	
+.view .stories {
+	flex: 1;
+	padding: 1.5em;
+	}
+  
+.view header {
+	width: 20vw;
+	min-width: 13rem;
+	max-width: 26rem;
+	padding: 1.5em;
+	background: #e3f4fb;
+	}*/

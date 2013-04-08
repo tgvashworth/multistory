@@ -7,6 +7,16 @@
              placeholder="Filter user stories"
              ng-model="search">
     </div>
+    
+    <p class="segment-picker"
+       ng-hide="view.raw">
+      <span class="field"
+            ng-repeat="seg in view.segments">
+        <input type="checkbox"
+               id="show-{{seg}}"
+               ng-model="view.show[seg]"> <label for="show-{{seg}}">{{seg | capitalize}}</label>
+      </span>
+    </p>
 
     <p class="section-picker">
       <span class="field"
@@ -16,28 +26,13 @@
                ng-model="stories.show"> <label for="show-{{stories.$key}}">{{stories.$key}}</label>
       </span>
     </p>
-    
-<fieldset>
-	<legend>Developer bits</legend>
-    <p class="view-picker">
-      <span class="field">
-        <input type="checkbox"
-               id="show-raw"
-               ng-model="view.raw"> <label for="show-raw">Raw</label>
-      </span>
-      <span class="field">
-        <input type="checkbox"
-               id="show-autoupdate"
-               ng-model="view.autoupdate"> <label for="show-autoupdate">Auto-update (dev)</label>
-      </span>
-    </p>
-</fieldset>
 
     <p class="view-picker">
       <span class="field">
         <input type="checkbox"
                id="show-subitems"
                ng-model="view.subitems"> <label for="show-subitems">Sub-items</label>
+               
       </span>
     </p>
 
@@ -51,23 +46,29 @@
       <span class="field">
         <input type="checkbox"
                id="show-unsized"
-               ng-model="view.show.unsized"> <label for="show-unsized">Unsized</label>
-      </span>
-    </p>
-
-    <p class="segment-picker"
-       ng-hide="view.raw">
-      <span class="field"
-            ng-repeat="seg in view.segments">
-        <input type="checkbox"
-               id="show-{{seg}}"
-               ng-model="view.show[seg]"> <label for="show-{{seg}}">{{seg | capitalize}}</label>
+               ng-model="view.show.unsized"> <label for="show-unsized">Isolate unsized items</label>
       </span>
     </p>
 
     <p class="another">
       <a href="/pick">View another file&hellip;</a>
     </p>
+        
+    <fieldset>
+    	<legend>Developer bits</legend>
+        <p class="view-picker">
+          <span class="field">
+            <input type="checkbox"
+                   id="show-raw"
+                   ng-model="view.raw"> <label for="show-raw">Raw</label>
+          </span>
+          <span class="field">
+            <input type="checkbox"
+                   id="show-autoupdate"
+                   ng-model="view.autoupdate"> <label for="show-autoupdate">Auto-update (dev)</label>
+          </span>
+        </p>
+    </fieldset>
 
     <p class="reloading"
        ng-show="view.reloading">
