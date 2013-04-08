@@ -8,6 +8,8 @@ function ($rootScope, $location) {
       key: "FGaYi1AdNxA=|ooVqJg/bZ06ETSKUK8FWlQ9vT9dKEdomuRRDFjqRtw=="
   });
 
+  var fileRev = {};
+
   client.authDriver(new Dropbox.Drivers.Redirect({
     rememberUser: true
   }));
@@ -36,7 +38,22 @@ function ($rootScope, $location) {
       });
     },
     file: function (path, cb) {
-      client.readFile(path, cb);
+      // Check if the file has been modified before reloading it.
+      client.stat(path, function (err, stat) {
+        stat = stat.json();
+        // Has the revision changed?
+        if (fileRev[path] !== stat.rev) {
+          // Yep, go get that badboy.
+          client.readFile(path, function (err, data) {
+            // Save the new revision
+            if (!err && data) fileRev[path] = stat.rev;
+            cb.apply(null, [].slice.call(arguments));
+          });
+        } else {
+          // File not modified
+          cb();
+        }
+      });
     }
   };
 
