@@ -184,6 +184,14 @@ h1, h2, h3, h4 {
   position: relative;
 }
 
+.view fieldset {
+	border: 1px solid rgba(0,0,0,0.25);
+}
+.view legend {
+	font-weight: normal;
+	color: rgba(0,0,0,0.5);
+}
+
 /*.field.search input {
   text-indent: 0.5em;
 }
