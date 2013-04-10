@@ -1,16 +1,8 @@
 /*global module:false*/
 module.exports = function(grunt) {
 
-  // Project configuration.
   grunt.initConfig({
-    // Metadata.
-    pkg: grunt.file.readJSON('package.json'),
-    banner: '/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - ' +
-      '<%= grunt.template.today("yyyy-mm-dd") %>\n' +
-      '<%= pkg.homepage ? "* " + pkg.homepage + "\\n" : "" %>' +
-      '* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
-      ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */\n',
-    // Task configuration.
+    // CSS concatenation
     concat: {
       options: {
         stripBanners: true
@@ -20,18 +12,21 @@ module.exports = function(grunt) {
         dest: 'public/assets/build/build.css'
       }
     },
+    // CSS minification
     cssmin: {
       css: {
         src: '<%= concat.css.dest %>',
         dest: '<%= concat.css.dest %>'
       }
     },
+    // Prepare Angular code for minification
     ngmin: {
       ng: {
         src: 'public/assets/app/**/*.js',
         dest: 'public/assets/build/build.js'
       }
     },
+    // Minify JS. No mangling. Right now, Angular no likey
     uglify: {
       ng: {
         options: {
@@ -41,9 +36,11 @@ module.exports = function(grunt) {
         dest: '<%= ngmin.ng.dest %>'
       }
     },
+    // Tests, if we had em
     qunit: {
       files: ['test/**/*.html']
     },
+    // Watch task
     watch: {
       gruntfile: {
         files: 'Gruntfile.js',
@@ -60,7 +57,7 @@ module.exports = function(grunt) {
     }
   });
 
-  // These plugins provide necessary tasks.
+  // Task plugins
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-nodeunit');
   grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -68,7 +65,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-ngmin');
 
-  // Default task.
-  grunt.registerTask('default', ['ngmin', 'uglify', 'concat', 'cssmin']);
+  // Tasks
+  grunt.registerTask('default', ['ngmin', 'concat']);
+  grunt.registerTask('heroku', ['ngmin', 'uglify', 'concat', 'cssmin']);
 
 };
