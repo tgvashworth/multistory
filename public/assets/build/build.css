@@ -26,6 +26,12 @@ h1, h2, h3, h4 {
   padding-top: 0;
 }
 
+/* General */
+
+[ng-click] {
+  cursor: pointer;
+}
+
 /* Landing page */
 
 .landing {
@@ -278,21 +284,21 @@ h1, h2, h3, h4 {
   [dropbox-browser] .meta a:active {
     color: hsl(204, 82%, 40%);
   }
-  
-  
-  
-  
-  
+
+
+
+
+
 /*flexbox experiment - I don’t know why but this didn’t work -@yandle*/
 /*.view {
 	display: flex;
 	}
-  	
+
 .view .stories {
 	flex: 1;
 	padding: 1.5em;
 	}
-  
+
 .view header {
 	width: 20vw;
 	min-width: 13rem;

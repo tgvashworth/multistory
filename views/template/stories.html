@@ -1,33 +1,49 @@
 <h2>{{stories.$key}}</h2>
 <ul class="parsed" ng-hide="view.raw">
   <li ng-repeat="story in stories | filter:search"
-      ng-hide="((story.who && !view.show.who) && (story.what && !view.show.what) && (story.why && !view.show.why)) || (view.show.unsized && story.sizes.length)">
-    <span ng-show="view.show.who">As a</span>
-    <strong class="who"
-            ng-show="view.show.who">{{story.who}}</strong>
-    <span ng-show="(view.show.who && view.show.what) || (view.show.who && view.show.why)">I want to</span>
-    <strong class="what"
-            ng-show="view.show.what">{{story.what}}</strong>
-    <span ng-show="view.show.what && view.show.why">so I can</span>
-    <strong class="why"
-            ng-show="view.show.why">{{story.why}}</strong>
-    <span ng-show="story.sizes.length">
-      <strong ng-repeat="size in story.sizes">[{{size}}]</strong>
+      ng-hide="(story.isStory && (((story.who && !view.show.who) && (story.what && !view.show.what) && (story.why && !view.show.why)) || (view.show.unsized && story.sizes.length))) || (isBug && !view.show.bug)">
+    <span ng-show="story.isStory">
+      <span ng-show="view.show.who">As a</span>
+      <strong class="who"
+              ng-show="view.show.who"
+              ng-click="searchFor(story.who)">{{story.who}}</strong>
+      <span ng-show="(view.show.who && view.show.what) || (view.show.who && view.show.why)">I want to</span>
+      <strong class="what"
+              ng-show="view.show.what">{{story.what}}</strong>
+      <span ng-show="view.show.what && view.show.why">so I can</span>
+      <strong class="why"
+              ng-show="view.show.why">{{story.why}}</strong>
+      <span ng-show="story.sizes.length">
+        <strong ng-repeat="size in story.sizes">[{{size}}]</strong>
+      </span>
+      <ul class="subitems"
+          ng-show="view.subitems">
+        <li ng-repeat="subitem in story.subitems">
+          <span ng-repeat="segment in subitem">
+            <a href="#"
+               ng-click="searchFor(segment.raw)"
+               ng-show="segment.mention || segment.hashtag">{{segment.raw}}</a>
+            <span ng-show="segment.text">{{segment.raw}}</span>
+          </span>
+          <span ng-show="subitem.sizes.length">
+            <strong ng-repeat="size in subitem.sizes">[{{size}}]</strong>
+          </span>
+        </li>
+      </ul>
     </span>
-    <ul class="subitems"
-        ng-show="view.subitems">
-      <li ng-repeat="subitem in story.subitems">
-        <span ng-repeat="segment in subitem">
+    <span ng-show="story.isBug">
+      <span ng-repeat="segment in story">
+        <em>
           <a href="#"
              ng-click="searchFor(segment.raw)"
              ng-show="segment.mention || segment.hashtag">{{segment.raw}}</a>
           <span ng-show="segment.text">{{segment.raw}}</span>
-        </span>
-        <span ng-show="subitem.sizes.length">
-          <strong ng-repeat="size in subitem.sizes">[{{size}}]</strong>
-        </span>
-      </li>
-    </ul>
+        </em>
+      </span>
+      <span ng-show="story.sizes.length">
+        <strong ng-repeat="size in story.sizes">[{{size}}]</strong>
+      </span>
+    </span>
   </li>
 </ul>
 

@@ -133,7 +133,15 @@ function (parseClean, parseRegex, parseSubitem, $filter, parseSizes, parseSizeRe
         return lastStory.subitems.push(subitem);
       }
 
-      line = line.trim().replace(/^-/, '');
+
+      line = line.trim().replace(/^-/, '').trim();
+
+      // Extract bugs
+      if (line.match(/^#bug/)) {
+        var bug = parseSubitem(line);
+        bug.isBug = true;
+        return groups[groupname].push(bug);
+      }
 
       // Match the line!
       var res = line.match(parseRegex),
@@ -161,6 +169,7 @@ function (parseClean, parseRegex, parseSubitem, $filter, parseSizes, parseSizeRe
 
       // Build the story object
       lastStory = {
+        isStory: true,
         who: cleaned[0],
         what: cleaned[1],
         why: cleaned[2],

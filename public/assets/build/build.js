@@ -329,8 +329,8 @@ angular.module('dropbox', []).factory('Dropbox', [
     };
     $timeout(function reload() {
       $scope.load();
-      $timeout(reload, 10000);
-    }, 10000);
+      $timeout(reload, 5000);
+    }, 5000);
     $scope.load();
   }
 ]);angular.module('ms-parse', []).factory('parseClean', function () {
@@ -339,7 +339,7 @@ angular.module('dropbox', []).factory('Dropbox', [
     return text.trim().toLowerCase();
   };
 }).factory('parseRegex', function () {
-  return /([A-Z\s'\(\)\&]+)[A-Za-z\s.,!']([A-Z\s'\(\)\&]+)[A-Za-z\s.,!']([A-Z\s'\(\)\&]+)/g;
+  return /([A-Z\s'‘’“”\(\)\&]+)[A-Za-z\s.,!']([A-Z\s'‘’“”\(\)\&]+)[A-Za-z\s.,!']([A-Z\s'‘’“”\(\)\&]+)/g;
 }).factory('parseSizeRegex', function () {
   return /\[.+?\]/g;
 }).factory('parseSizes', function () {
@@ -398,15 +398,15 @@ angular.module('dropbox', []).factory('Dropbox', [
   function (parseClean, parseRegex, parseSubitem, $filter, parseSizes, parseSizeRegex) {
     return function (raw) {
       raw = raw || '';
-      var lines = raw.split('\n'), sections = [], groups = {}, groupname = 'icebox', lastStory = {};
+      var lines = raw.split('\n'), sections = [], groups = {}, groupname = null, lastStory = {};
       lines.forEach(function (line, index) {
         var cleanedSizes = [];
         if (line.match('---')) {
-          groupname = parseClean(lines[index - 1]);
+          return groupname = parseClean(lines[index - 1]);
         } else if (line.match(/^#+\s/)) {
-          groupname = parseClean(line);
+          return groupname = parseClean(line);
         }
-        if (!groups[groupname]) {
+        if (groupname && !groups[groupname]) {
           groups[groupname] = [];
           groups[groupname].$key = $filter('capitalize')(groupname);
           sections.push(groups[groupname]);
@@ -415,10 +415,17 @@ angular.module('dropbox', []).factory('Dropbox', [
           var subitem = parseSubitem(line);
           return lastStory.subitems.push(subitem);
         }
-        line = line.trim().replace(/^-/, '');
+        line = line.trim().replace(/^-/, '').trim();
+        if (line.match(/^#bug/)) {
+          var bug = parseSubitem(line);
+          bug.isBug = true;
+          return groups[groupname].push(bug);
+        }
         var res = line.match(parseRegex), sizes = line.match(parseSizeRegex);
         if (!res)
           return;
+        if (res && !groupname)
+          return alert('Ungrouped story found.\n\n' + line);
         if (sizes) {
           cleanedSizes = parseSizes(sizes);
         }
@@ -430,6 +437,7 @@ angular.module('dropbox', []).factory('Dropbox', [
           });
         cleaned = cleaned.slice(0, 2).concat(cleaned.slice(2).join(' '));
         lastStory = {
+          isStory: true,
           who: cleaned[0],
           what: cleaned[1],
           why: cleaned[2],
