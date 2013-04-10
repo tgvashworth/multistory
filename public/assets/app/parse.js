@@ -103,7 +103,7 @@ function (parseClean, parseRegex, parseSubitem, $filter, parseSizes, parseSizeRe
     var lines = raw.split('\n'),
         sections = [],
         groups = {},
-        groupname = 'icebox',
+        groupname = null,
         lastStory = {};
 
     // Iterate over the lines, extracting stories as we go
@@ -113,14 +113,14 @@ function (parseClean, parseRegex, parseSubitem, $filter, parseSizes, parseSizeRe
 
       // Extract group headings
       if (line.match('---')) {
-        groupname = parseClean(lines[index - 1]);
+        return groupname = parseClean(lines[index - 1]);
       } else if (line.match(/^#+\s/)) {
-        groupname = parseClean(line);
+        return groupname = parseClean(line);
       }
 
       // If this a new group create it, and push a reference onto the sections
       // array so we maintain the order in the storied file
-      if (!groups[groupname]) {
+      if (groupname && !groups[groupname]) {
         groups[groupname] = [];
         groups[groupname].$key = $filter('capitalize')(groupname);
         sections.push(groups[groupname]);
@@ -140,6 +140,8 @@ function (parseClean, parseRegex, parseSubitem, $filter, parseSizes, parseSizeRe
           sizes = line.match(parseSizeRegex);
 
       if (!res) return;
+
+      if (res && !groupname) return alert("Ungrouped story found.\n\n" + line);
 
       if (sizes) {
         cleanedSizes = parseSizes(sizes);
