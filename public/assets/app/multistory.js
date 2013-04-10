@@ -180,8 +180,8 @@ function ($scope, $filter, $location, $timeout,
 
   $timeout(function reload(){
     $scope.load();
-    $timeout(reload, 10000);
-  }, 10000);
+    $timeout(reload, 5000);
+  }, 5000);
 
   $scope.load();
 
