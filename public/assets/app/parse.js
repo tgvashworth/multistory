@@ -14,7 +14,7 @@ angular.module('ms-parse', [])
 // The big daddy regex
 // ==================================
 .factory('parseRegex', function () {
-  return (/([A-Z\s'\(\)\&]+)[A-Za-z\s.,!']([A-Z\s'\(\)\&]+)[A-Za-z\s.,!']([A-Z\s'\(\)\&]+)/g);
+  return (/([A-Z\s'‘’“”\(\)\&]+)[A-Za-z\s.,!']([A-Z\s'‘’“”\(\)\&]+)[A-Za-z\s.,!']([A-Z\s'‘’“”\(\)\&]+)/g);
 })
 
 // ==================================
