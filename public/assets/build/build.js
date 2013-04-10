@@ -301,6 +301,9 @@ angular.module('dropbox', []).factory('Dropbox', [
     $scope.searchFor = function (text) {
       $scope.search = text;
     };
+    $scope.saveShow = function (section) {
+      storage.save($scope.view.file + ':show:' + section.$key, section.show);
+    };
     $scope.load = function () {
       if (!$scope.view.autoupdate)
         return;
@@ -315,14 +318,19 @@ angular.module('dropbox', []).factory('Dropbox', [
             $scope.view.reloading = false;
           }, 500);
           var sections = parse(data);
-          $scope.sections = sections.map(function (stories) {
-            var matchingSections = $filter('filter')($scope.sections, { $key: stories.$key });
-            if (matchingSections.length) {
-              stories.show = matchingSections[0].show;
-            } else {
-              stories.show = !!stories.length;
+          $scope.sections = sections.map(function (section) {
+            var storedValue = storage.get($scope.view.file + ':show:' + section.$key);
+            if (typeof storedValue !== 'undefined' && storedValue !== null) {
+              section.show = storedValue;
+              return section;
             }
-            return stories;
+            var matchingSections = $filter('filter')($scope.sections, { $key: section.$key });
+            if (matchingSections.length) {
+              section.show = matchingSections[0].show;
+            } else {
+              section.show = !!section.length;
+            }
+            return section;
           });
         });
       });
@@ -459,7 +467,7 @@ angular.module('dropbox', []).factory('Dropbox', [
         result = JSON.parse(result);
       } catch (e) {
       }
-      return result || undefined;
+      return typeof result !== 'undefined' ? result : undefined;
     },
     save: function (identifier, data) {
       if (angular.isObject(data)) {

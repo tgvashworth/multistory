@@ -7,7 +7,7 @@ angular.module('ms-storage', [])
       try {
         result = JSON.parse(result);
       } catch(e) {}
-      return result || undefined;
+      return (typeof result !== "undefined" ? result : undefined);
     },
     save: function (identifier, data) {
       if (angular.isObject(data)) {

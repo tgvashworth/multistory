@@ -147,6 +147,10 @@ function ($scope, $filter, $location, $timeout,
     $scope.search = text;
   };
 
+  $scope.saveShow = function (section) {
+    storage.save($scope.view.file + ':show:' + section.$key, section.show);
+  };
+
   // ==================================
   // Load the file from search
   // ==================================
@@ -164,15 +168,27 @@ function ($scope, $filter, $location, $timeout,
         }, 500);
         // Parse the sections from the file data
         var sections = parse(data);
-        $scope.sections = sections.map(function (stories) {
-          // Maintain which sections are shown
-          var matchingSections = $filter('filter')($scope.sections, { $key: stories.$key });
-          if (matchingSections.length) {
-            stories.show = matchingSections[0].show;
-          } else {
-            stories.show = !!stories.length;
+        $scope.sections = sections.map(function (section) {
+          // Maintain which sections are shown by filtering the old sections
+          // and matching them up to the new ones, or by restoring from the
+          // user's saved settings.
+          // We'd rather not filter, for performance, so look for the stored
+          // value first.
+          var storedValue = storage.get($scope.view.file + ':show:' + section.$key);
+          if (typeof storedValue !== "undefined" && storedValue !== null) {
+            section.show = storedValue;
+            return section;
           }
-          return stories;
+          // No store match, so look for matches.
+          var matchingSections = $filter('filter')($scope.sections, { $key: section.$key });
+          if (matchingSections.length) {
+            // A matching section was found, use its show value
+            section.show = matchingSections[0].show;
+          } else {
+            // Nope, no found. Use the length.
+            section.show = !!section.length;
+          }
+          return section;
         });
       });
     });
